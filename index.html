@@ -82,7 +82,7 @@
 
 <div id="app-root">
   <div class="app-toast-container" id="app-toast-container"></div>
-  <div id="sync-status-indicator" class="text-success"><i class="fa-solid fa-circle-check me-1"></i> สถานะ: <span id="sync-time">เชื่อมต่อแล้ว</span></div>
+  <div id="sync-status-indicator" class="text-success"><i class="fa-solid fa-circle-check me-1"></i> สถานะ: <span id="sync-time">กำลังเชื่อมต่อ...</span></div>
 
   <div class="user-body-bg">
     <div class="container" style="max-width: 1350px;">
@@ -438,7 +438,8 @@
     fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ action: actionName, data: payloadData })
+      body: JSON.stringify({ action: actionName, data: payloadData }),
+      redirect: "follow"
     })
     .then(res => res.json())
     .then(response => { if (callback) callback(response); })
@@ -455,24 +456,39 @@
   }
 
   function fetchData() { 
-    fetch(`${API_URL}?action=getOfficeData`)
-      .then(res => res.json())
-      .then(data => {
-        if(data) {
-          serverCache = data; 
-          if(document.getElementById('sync-time')) document.getElementById('sync-time').innerText = new Date().toLocaleTimeString(); 
-          
-          updateDashboardCounters(); 
-          renderMainViews(); 
-          renderGlobalSearchViews(); 
-          renderPRCardsHome(); 
-          generateFloorSelectorUI(); 
-          renderSubBranchGridCards(); 
-          renderUserBookingsTable();
-          if(activeFloorKey !== "") executeFloorRendering(activeFloorKey);
+    fetch(`${API_URL}?action=getOfficeData`, {
+      method: "GET",
+      redirect: "follow"
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data) {
+        serverCache = data; 
+        if(document.getElementById('sync-time')) {
+          document.getElementById('sync-time').innerText = "อัปเดตแล้ว " + new Date().toLocaleTimeString(); 
         }
-      })
-      .catch(err => console.error("Error fetching data:", err));
+        
+        updateDashboardCounters(); 
+        renderMainViews(); 
+        renderGlobalSearchViews(); 
+        renderPRCardsHome(); 
+        generateFloorSelectorUI(); 
+        renderSubBranchGridCards(); 
+        renderUserBookingsTable();
+        
+        if(activeFloorKey === "") {
+          executeFloorRendering('1');
+        } else {
+          executeFloorRendering(activeFloorKey);
+        }
+      }
+    })
+    .catch(err => {
+      console.error("Error fetching data:", err);
+      if(document.getElementById('sync-time')) {
+        document.getElementById('sync-time').innerText = "เชื่อมต่อล้มเหลว";
+      }
+    });
   }
 
   function promptAdminAuth() {
