@@ -462,7 +462,8 @@
     fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ action: actionName, data: payloadData })
+      body: JSON.stringify({ action: actionName, data: payloadData }),
+      redirect: "follow"
     })
     .then(res => res.json())
     .then(response => { if (callback) callback(response); })
@@ -473,7 +474,10 @@
   }
 
   function fetchAdminData() {
-    fetch(`${API_URL}?action=getOfficeData`)
+    fetch(`${API_URL}?action=getOfficeData`, {
+      method: "GET",
+      redirect: "follow"
+    })
       .then(res => res.json())
       .then(data => {
         if(data) {
