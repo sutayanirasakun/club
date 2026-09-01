@@ -29,24 +29,35 @@
         </div>
       </a>
 
+      <!-- Menu Navigation -->
       <nav class="hidden md:flex items-center space-x-6 text-sm text-slate-300">
         <a href="#gallery" class="hover:text-blue-400 transition">ภาพถ่าย</a>
-        <span id="member-menu" class="hidden space-x-6">
-          <a href="#schedule-section" class="hover:text-blue-400 transition">ตารางงาน</a>
-          <a href="#equipment-section" class="hover:text-blue-400 transition">อุปกรณ์ชมรม</a>
+        <a href="#videos" class="hover:text-blue-400 transition">วิดีโอ</a>
+        <a href="#members" class="hover:text-blue-400 transition">สมาชิกชมรม</a>
+        
+        <!-- เมนูเฉพาะสมาชิกที่ล็อกอินแล้ว -->
+        <span id="member-menu" class="hidden space-x-6 border-l border-slate-700 pl-6">
+          <a href="#jobs-section" class="text-blue-400 hover:text-blue-300 font-medium transition">📌 ตารางรับงาน</a>
+          <a href="#equipment-section" class="text-blue-400 hover:text-blue-300 font-medium transition">📷 การใช้อุปกรณ์</a>
         </span>
-        <span id="admin-menu" class="hidden">
-          <a href="#admin-panel" class="text-amber-400 hover:text-amber-300 font-semibold transition">⚙️ เมนูแอดมิน</a>
+
+        <!-- เมนูผู้ดูแลและผู้บริหาร -->
+        <span id="manage-menu" class="hidden">
+          <a href="#management-panel" class="text-amber-400 hover:text-amber-300 font-semibold transition">⚙️ เมนูจัดการ</a>
         </span>
       </nav>
 
+      <!-- Auth Action -->
       <div id="auth-buttons" class="flex items-center gap-2">
         <button onclick="openModal('loginModal')" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-xl border border-slate-700 hover:bg-slate-800 transition">เข้าสู่ระบบ</button>
         <a href="#join" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white transition">สมัครสมาชิก</a>
       </div>
       <div id="user-profile" class="hidden items-center gap-3">
-        <span id="user-display-name" class="text-xs sm:text-sm text-blue-400 font-medium"></span>
-        <button onclick="logout()" class="text-xs px-2.5 py-1 bg-red-950/60 hover:bg-red-900 border border-red-800 text-red-300 rounded-lg transition">ออกจากระบบ</button>
+        <div class="text-right">
+          <span id="user-display-name" class="text-xs sm:text-sm text-blue-400 font-medium block"></span>
+          <span id="user-display-role" class="text-[10px] text-slate-400 block"></span>
+        </div>
+        <button onclick="logout()" class="text-xs px-2.5 py-1.5 bg-red-950/60 hover:bg-red-900 border border-red-800 text-red-300 rounded-xl transition">ออกจากระบบ</button>
       </div>
     </div>
   </header>
@@ -55,40 +66,81 @@
   <section class="bg-gradient-hero py-20 px-4 text-center border-b border-slate-800">
     <div class="max-w-3xl mx-auto space-y-4">
       <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800/60 text-blue-300 text-xs font-medium">
-        <i data-lucide="camera" class="w-3.5 h-3.5"></i> CRRU Photography Club
+        <i data-lucide="camera" class="w-3.5 h-3.5"></i> Chiang Rai Rajabhat University Photography Club
       </div>
       <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
-        เปิดมุมมองใหม่ <br><span class="text-gradient">บันทึกทุกความทรงจำ</span>
+        บันทึกทุกความทรงจำ <br><span class="text-gradient">ผ่านมุมมองช่างภาพ CRRU</span>
       </h1>
       <p class="text-slate-400 text-xs sm:text-sm max-w-xl mx-auto font-light">
-        ชมรมช่างภาพ มหาวิทยาลัยราชภัฏเชียงราย ศูนย์รวมคนรักการกดชัตเตอร์
+        พื้นที่จัดแสดงผลงานภาพถ่าย ผลงานมีเดีย และศูนย์รวมช่างภาพมหาวิทยาลัยราชภัฏเชียงราย
       </p>
     </div>
   </section>
 
-  <!-- ================= MEMBER ONLY: SCHEDULES ================= -->
-  <section id="schedule-section" class="hidden py-12 max-w-6xl mx-auto px-4">
-    <div class="flex items-center gap-2 mb-6">
-      <i data-lucide="calendar" class="w-5 h-5 text-blue-400"></i>
-      <h2 class="text-xl font-bold text-white">ตารางงานและกิจกรรมชมรม</h2>
+  <!-- ================= 1. PHOTO GALLERY (หน้าแรก) ================= -->
+  <section id="gallery" class="py-16 max-w-6xl mx-auto px-4 w-full">
+    <div class="mb-6 flex justify-between items-end">
+      <div>
+        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i data-lucide="image" class="w-6 h-6 text-blue-500"></i> ผลงานภาพถ่าย
+        </h2>
+        <p class="text-slate-400 text-xs">CRRU Photo Showcase</p>
+      </div>
     </div>
-    <div id="schedule-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    <div id="gallery-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
   </section>
 
-  <!-- ================= MEMBER ONLY: EQUIPMENTS ================= -->
-  <section id="equipment-section" class="hidden py-12 max-w-6xl mx-auto px-4 border-t border-slate-800/60">
-    <div class="flex items-center gap-2 mb-6">
-      <i data-lucide="box" class="w-5 h-5 text-blue-400"></i>
-      <h2 class="text-xl font-bold text-white">รายการอุปกรณ์ชมรม</h2>
+  <!-- ================= 2. VIDEO SHOWCASE (หน้าแรก) ================= -->
+  <section id="videos" class="py-16 max-w-6xl mx-auto px-4 w-full border-t border-slate-800/80">
+    <div class="mb-6">
+      <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+        <i data-lucide="video" class="w-6 h-6 text-red-500"></i> ผลงานวิดีโอ
+      </h2>
+      <p class="text-slate-400 text-xs">CRRU Video & Media Showcase</p>
+    </div>
+    <div id="video-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+  </section>
+
+  <!-- ================= 3. PUBLIC MEMBERS DIRECTORY (หน้าแรก) ================= -->
+  <section id="members" class="py-16 max-w-6xl mx-auto px-4 w-full border-t border-slate-800/80">
+    <div class="mb-6">
+      <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+        <i data-lucide="users" class="w-6 h-6 text-emerald-500"></i> ทำเนียบสมาชิกชมรม
+      </h2>
+      <p class="text-slate-400 text-xs">รายชื่อสมาชิกและฝ่ายบริหารชมรมช่างภาพ</p>
+    </div>
+    <div id="members-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
+  </section>
+
+  <!-- ================= MEMBER ONLY 1: JOB BOARD (ตารางเลือกรับงาน) ================= -->
+  <section id="jobs-section" class="hidden py-14 max-w-6xl mx-auto px-4 border-t border-blue-900/60 bg-blue-950/10 rounded-3xl my-8">
+    <div class="mb-6">
+      <span class="px-2.5 py-0.5 rounded-full text-[11px] bg-blue-900 text-blue-300 font-semibold uppercase">Member Only</span>
+      <h2 class="text-2xl font-bold text-white mt-1">📌 ตารางงานและกิจกรรม (เลือกรับงาน)</h2>
+      <p class="text-slate-400 text-xs">สมาชิกสามารถกดลงชื่อเพื่อรับหน้าที่ถ่ายภาพในงานต่างๆ ได้</p>
+    </div>
+    <div id="job-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+  </section>
+
+  <!-- ================= MEMBER ONLY 2: EQUIPMENT LOG (ตารางการใช้อุปกรณ์) ================= -->
+  <section id="equipment-section" class="hidden py-14 max-w-6xl mx-auto px-4 border-t border-slate-800 my-8">
+    <div class="mb-6 flex justify-between items-end">
+      <div>
+        <span class="px-2.5 py-0.5 rounded-full text-[11px] bg-blue-900 text-blue-300 font-semibold uppercase">Member Only</span>
+        <h2 class="text-2xl font-bold text-white mt-1">📷 ตารางสถานะและการใช้อุปกรณ์</h2>
+        <p class="text-slate-400 text-xs">ตรวจสอบว่าอุปกรณ์ชิ้นไหนว่าง หรือถูกใครเบิกใช้งานในวันนี้</p>
+      </div>
     </div>
     <div class="overflow-x-auto bg-slate-900 rounded-2xl border border-slate-800">
-      <table class="w-full text-left text-sm text-slate-300">
-        <thead class="bg-slate-950 text-xs uppercase text-slate-400 border-b border-slate-800">
+      <table class="w-full text-left text-xs text-slate-300">
+        <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 uppercase text-[11px]">
           <tr>
-            <th class="p-4">ชื่ออุปกรณ์</th>
+            <th class="p-4">รหัส / อุปกรณ์</th>
             <th class="p-4">หมวดหมู่</th>
-            <th class="p-4">สถานะ</th>
-            <th class="p-4">สถานที่จัดเก็บ/หมายเหตุ</th>
+            <th class="p-4">สถานะวันนี้</th>
+            <th class="p-4">ผู้กำลังใช้งาน</th>
+            <th class="p-4">วันที่เบิกใช้</th>
+            <th class="p-4 text-center">จัดการการยืม/คืน</th>
           </tr>
         </thead>
         <tbody id="equipment-tbody" class="divide-y divide-slate-800"></tbody>
@@ -96,59 +148,52 @@
     </div>
   </section>
 
-  <!-- ================= ADMIN ONLY: DASHBOARD ================= -->
-  <section id="admin-panel" class="hidden py-12 max-w-6xl mx-auto px-4 border-t border-amber-900/50 bg-amber-950/10 rounded-3xl mt-8">
+  <!-- ================= ADMIN & EXECUTIVE PANEL ================= -->
+  <section id="management-panel" class="hidden py-14 max-w-6xl mx-auto px-4 border-t border-amber-900/60 bg-amber-950/15 rounded-3xl my-8">
     <div class="flex items-center gap-2 mb-6">
-      <i data-lucide="shield-check" class="w-6 h-6 text-amber-400"></i>
-      <h2 class="text-2xl font-bold text-amber-400">Admin Dashboard (ระบบจัดการ)</h2>
+      <i data-lucide="shield" class="w-6 h-6 text-amber-400"></i>
+      <h2 class="text-2xl font-bold text-amber-400">ระบบจัดการชมรม (Admin & Executive Dashboard)</h2>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+    <!-- ปุ่มเพิ่มข้อมูลสำหรับ Admin & Executive -->
+    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
       <button onclick="openModal('uploadDriveModal')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-left">
-        <p class="font-semibold text-white">📤 อัปโหลดรูปภาพสู่ Google Drive</p>
-        <p class="text-xs text-slate-400">เลือกไฟล์จากเครื่อง บันทึกลง Drive อัตโนมัติ</p>
+        <p class="font-semibold text-white">📸 อัปโหลดภาพ (Drive)</p>
+        <p class="text-[11px] text-slate-400">อัปโหลดภาพลง Google Drive</p>
       </button>
-      <button onclick="openModal('addScheduleModal')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-left">
-        <p class="font-semibold text-white">📅 เพิ่มตารางกิจกรรม</p>
-        <p class="text-xs text-slate-400">ประกาศวันจัดทริปหรือการอบรม</p>
+      <button onclick="openModal('addVideoModal')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-left">
+        <p class="font-semibold text-white">🎬 เพิ่มวิดีโอ</p>
+        <p class="text-[11px] text-slate-400">เพิ่มคลิป YouTube ผลงาน</p>
+      </button>
+      <button onclick="openModal('addJobModal')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-left">
+        <p class="font-semibold text-white">📅 เพิ่มงานใหม่</p>
+        <p class="text-[11px] text-slate-400">เปิดให้สมาชิกมาลงชื่อรับงาน</p>
       </button>
       <button onclick="openModal('addEquipModal')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-left">
-        <p class="font-semibold text-white">📦 เพิ่มอุปกรณ์เข้าคลัง</p>
-        <p class="text-xs text-slate-400">บันทึกกล้อง เลนส์ และไฟ</p>
+        <p class="font-semibold text-white">📦 เพิ่มอุปกรณ์</p>
+        <p class="text-[11px] text-slate-400">บันทึกอุปกรณ์ใหม่เข้าสู่คลัง</p>
       </button>
     </div>
 
-    <h3 class="text-lg font-semibold text-white mb-3">รายชื่อผู้สมัครที่รออนุมัติ</h3>
-    <div class="overflow-x-auto bg-slate-900 rounded-2xl border border-slate-800">
-      <table class="w-full text-left text-xs text-slate-300">
-        <thead class="bg-slate-950 text-slate-400 border-b border-slate-800">
-          <tr>
-            <th class="p-3">ชื่อ-สกุล</th>
-            <th class="p-3">Username / รหัส นศ.</th>
-            <th class="p-3">คณะ</th>
-            <th class="p-3">อีเมล</th>
-            <th class="p-3">เบอร์โทร</th>
-            <th class="p-3">สถานะ</th>
-            <th class="p-3 text-center">จัดการ</th>
-          </tr>
-        </thead>
-        <tbody id="member-approval-tbody" class="divide-y divide-slate-800"></tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- ================= GALLERY ================= -->
-  <section id="gallery" class="py-16 max-w-6xl mx-auto px-4 w-full">
-    <div class="mb-6 flex justify-between items-end">
-      <div>
-        <h2 class="text-2xl font-bold text-white">ภาพถ่ายในแกลเลอรี</h2>
-        <p class="text-slate-400 text-xs">CRRU Photography Collection</p>
+    <!-- ส่วนอนุมัติสมาชิก (Admin Only) -->
+    <div id="admin-approval-section" class="hidden">
+      <h3 class="text-lg font-semibold text-white mb-3">รายชื่อผู้สมัครรออนุมัติ (เฉพาะ Admin สูงสุด)</h3>
+      <div class="overflow-x-auto bg-slate-900 rounded-2xl border border-slate-800">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-950 text-slate-400 border-b border-slate-800">
+            <tr>
+              <th class="p-3">ชื่อ-สกุล</th>
+              <th class="p-3">Username</th>
+              <th class="p-3">คณะ</th>
+              <th class="p-3">อีเมล</th>
+              <th class="p-3">กำหนดตำแหน่งและสิทธิ์</th>
+              <th class="p-3 text-center">การอนุมัติ</th>
+            </tr>
+          </thead>
+          <tbody id="member-approval-tbody" class="divide-y divide-slate-800"></tbody>
+        </table>
       </div>
-      <button onclick="loadGallery()" class="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1">
-        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> รีเฟรช
-      </button>
     </div>
-    <div id="gallery-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
   </section>
 
   <!-- ================= REGISTER FORM ================= -->
@@ -156,7 +201,7 @@
     <div class="bg-slate-900/80 border border-slate-800 p-6 sm:p-8 rounded-3xl shadow-2xl">
       <div class="text-center mb-6">
         <h2 class="text-2xl font-bold text-white">สมัครเข้าร่วมชมรม</h2>
-        <p class="text-slate-400 text-xs mt-1">กรอกข้อมูลเพื่อรอแอดมินอนุมัติและรับลิงก์ตั้งรหัสผ่าน</p>
+        <p class="text-slate-400 text-xs mt-1">กรอกข้อมูลเพื่อรอรับการอนุมัติสิทธิ์จากแอดมิน</p>
       </div>
       <form id="registerForm" class="space-y-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -180,7 +225,7 @@
           </div>
         </div>
         <div>
-          <label class="block text-xs text-slate-300 mb-1">อีเมล (เพื่อรับการอนุมัติและตั้งรหัสผ่าน) *</label>
+          <label class="block text-xs text-slate-300 mb-1">อีเมล (เพื่อรับการอนุมัติ) *</label>
           <input type="email" id="reg-email" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none" placeholder="name@crru.ac.th">
         </div>
         <div>
@@ -193,14 +238,14 @@
   </section>
 
   <!-- ================= MODALS ================= -->
-  <!-- 1. Modal Login (Username & Password) -->
+  <!-- 1. Login Modal -->
   <div id="loginModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 max-w-sm w-full p-6 rounded-2xl shadow-2xl">
       <h3 class="text-lg font-bold text-white mb-4">เข้าสู่ระบบสมาชิก</h3>
       <form id="loginForm" class="space-y-3">
         <div>
           <label class="block text-xs text-slate-300 mb-1">Username (รหัสนักศึกษา หรือ อีเมล)</label>
-          <input type="text" id="login-username" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none" placeholder="เช่น 6514630xx หรือ admin">
+          <input type="text" id="login-username" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none">
         </div>
         <div>
           <label class="block text-xs text-slate-300 mb-1">รหัสผ่าน</label>
@@ -211,71 +256,105 @@
         </div>
         <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-medium">เข้าสู่ระบบ</button>
       </form>
-      <button onclick="closeModal('loginModal')" class="mt-3 w-full py-2 bg-slate-800 text-slate-400 rounded-xl text-xs hover:bg-slate-700">ปิด</button>
+      <button onclick="closeModal('loginModal')" class="mt-3 w-full py-2 bg-slate-800 text-slate-400 rounded-xl text-xs">ปิด</button>
     </div>
   </div>
 
-  <!-- 2. Modal Upload to Drive (Admin) -->
+  <!-- 2. Modal ยืม/เบิกใช้อุปกรณ์ -->
+  <div id="borrowModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 max-w-sm w-full p-6 rounded-2xl">
+      <h3 class="text-base font-bold text-white mb-2">บันทึกการเบิกใช้อุปกรณ์</h3>
+      <p id="borrow-equip-name" class="text-xs text-blue-400 font-medium mb-3"></p>
+      <form id="borrowForm" class="space-y-3 text-xs">
+        <input type="hidden" id="borrow-equip-id">
+        <div>
+          <label class="text-slate-300 block mb-1">วันที่ใช้งาน</label>
+          <input type="text" id="borrow-date" required placeholder="เช่น วันนี้ หรือ 25 ต.ค." class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        </div>
+        <div>
+          <label class="text-slate-300 block mb-1">หมายเหตุ / สถานที่นำไปใช้</label>
+          <input type="text" id="borrow-note" required placeholder="เช่น ถ่ายงานกีฬา มรภ." class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        </div>
+        <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold">ยืนยันการเบิกใช้</button>
+      </form>
+      <button onclick="closeModal('borrowModal')" class="mt-2 w-full py-1.5 bg-slate-800 text-slate-400 rounded-lg text-xs">ยกเลิก</button>
+    </div>
+  </div>
+
+  <!-- 3. Modal Upload Drive -->
   <div id="uploadDriveModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 max-w-md w-full p-6 rounded-2xl shadow-2xl space-y-3">
+    <div class="bg-slate-900 border border-slate-800 max-w-md w-full p-6 rounded-2xl space-y-3">
       <h3 class="font-bold text-white">อัปโหลดภาพลง Google Drive</h3>
       <form id="uploadDriveForm" class="space-y-2.5 text-xs">
-        <div>
-          <label class="text-slate-300 mb-1 block">เลือกไฟล์รูปภาพจากเครื่อง *</label>
-          <input type="file" id="up-file" accept="image/*" required class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-slate-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:bg-blue-600 file:text-white">
-        </div>
-        <div>
-          <label class="text-slate-300 mb-1 block">ชื่อภาพ *</label>
-          <input type="text" id="up-title" required placeholder="เช่น ทิวทัศน์ยามเย็น มรภ." class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white">
-        </div>
-        <div>
-          <label class="text-slate-300 mb-1 block">ชื่อช่างภาพ *</label>
-          <input type="text" id="up-photog" required placeholder="ชื่อสมาชิก หรือ ช่างภาพ" class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white">
-        </div>
-        <div>
-          <label class="text-slate-300 mb-1 block">หมวดหมู่</label>
-          <input type="text" id="up-cat" placeholder="Portrait, Landscape, Event" class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white">
-        </div>
-        <div>
-          <label class="text-slate-300 mb-1 block">คำอธิบายภาพ</label>
-          <textarea id="up-desc" rows="2" placeholder="รายละเอียดหรือสถานที่..." class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white"></textarea>
-        </div>
-        <button type="submit" id="btnUploadDrive" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold mt-2">เริ่มอัปโหลดเข้า Drive</button>
+        <input type="file" id="up-file" accept="image/*" required class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-slate-300 file:mr-2 file:py-1 file:px-2 file:rounded file:bg-blue-600 file:text-white">
+        <input type="text" id="up-title" required placeholder="ชื่อภาพ" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800">
+        <input type="text" id="up-photog" required placeholder="ชื่อช่างภาพ" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800">
+        <input type="text" id="up-cat" placeholder="หมวดหมู่ เช่น Portrait, Landscape" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800">
+        <textarea id="up-desc" placeholder="คำอธิบายภาพ" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800"></textarea>
+        <button type="submit" class="w-full py-2 bg-blue-600 rounded-lg text-white font-semibold">อัปโหลด</button>
       </form>
       <button onclick="closeModal('uploadDriveModal')" class="w-full py-1.5 bg-slate-800 text-slate-400 rounded-lg text-xs">ยกเลิก</button>
     </div>
   </div>
 
-  <!-- 3. Modal Forgot Password -->
-  <div id="forgotModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 max-w-sm w-full p-6 rounded-2xl">
-      <h3 class="text-lg font-bold text-white mb-2">ลืมรหัสผ่าน</h3>
-      <p class="text-xs text-slate-400 mb-4">กรอก Username หรือ อีเมลของคุณ เพื่อรับลิงก์รีเซ็ตรหัสผ่าน</p>
-      <form id="forgotForm" class="space-y-3">
-        <input type="text" id="forgot-input" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none" placeholder="Username หรือ อีเมล">
-        <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-medium">ส่งลิงก์รีเซ็ต</button>
+  <!-- 4. Modal Add Video -->
+  <div id="addVideoModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 max-w-md w-full p-6 rounded-2xl space-y-3">
+      <h3 class="font-bold text-white">เพิ่มผลงานวิดีโอ (YouTube)</h3>
+      <form id="addVideoForm" class="space-y-2.5 text-xs">
+        <input type="text" id="v-title" required placeholder="ชื่อคลิปวิดีโอ" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800">
+        <input type="url" id="v-url" required placeholder="ลิงก์ YouTube (https://www.youtube.com/watch?v=...)" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800">
+        <input type="text" id="v-creator" required placeholder="ผู้สร้างสรรค์ / ทีมงาน" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800">
+        <textarea id="v-desc" placeholder="รายละเอียดวิดีโอ" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800"></textarea>
+        <button type="submit" class="w-full py-2 bg-blue-600 rounded-lg text-white font-semibold">บันทึกวิดีโอ</button>
       </form>
-      <button onclick="switchModal('forgotModal', 'loginModal')" class="mt-3 w-full py-2 bg-slate-800 text-slate-400 rounded-xl text-xs hover:bg-slate-700">กลับ</button>
+      <button onclick="closeModal('addVideoModal')" class="w-full py-1.5 bg-slate-800 text-slate-400 rounded-lg text-xs">ยกเลิก</button>
     </div>
   </div>
 
-  <!-- 4. Modal Set/Reset Password -->
+  <!-- 5. Modal Add Job -->
+  <div id="addJobModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 max-w-md w-full p-6 rounded-2xl space-y-3">
+      <h3 class="font-bold text-white">เพิ่มตารางงานใหม่</h3>
+      <form id="addJobForm" class="space-y-2.5 text-xs">
+        <input type="text" id="j-date" required placeholder="วันที่จัดงาน (เช่น 28 ต.ค. 2569)" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800">
+        <input type="text" id="j-title" required placeholder="ชื่องาน / กิจกรรม" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800">
+        <input type="text" id="j-location" required placeholder="สถานที่" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800">
+        <textarea id="j-detail" placeholder="รายละเอียด เช่น ต้องการช่างภาพกี่คน" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800"></textarea>
+        <button type="submit" class="w-full py-2 bg-blue-600 rounded-lg text-white font-semibold">เปิดรับงาน</button>
+      </form>
+      <button onclick="closeModal('addJobModal')" class="w-full py-1.5 bg-slate-800 text-slate-400 rounded-lg text-xs">ยกเลิก</button>
+    </div>
+  </div>
+
+  <!-- 6. Modal Add Equipment -->
+  <div id="addEquipModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 max-w-md w-full p-6 rounded-2xl space-y-3">
+      <h3 class="font-bold text-white">เพิ่มอุปกรณ์เข้าคลัง</h3>
+      <form id="addEquipForm" class="space-y-2.5 text-xs">
+        <input type="text" id="eq-name" required placeholder="ชื่ออุปกรณ์ (เช่น Canon R6 Mark II)" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800">
+        <input type="text" id="eq-cat" required placeholder="หมวดหมู่ (Camera, Lens, Light, Tripod)" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800">
+        <input type="text" id="eq-note" placeholder="สถานที่เก็บ / รายละเอียดอุปกรณ์" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800">
+        <button type="submit" class="w-full py-2 bg-blue-600 rounded-lg text-white font-semibold">บันทึกอุปกรณ์</button>
+      </form>
+      <button onclick="closeModal('addEquipModal')" class="w-full py-1.5 bg-slate-800 text-slate-400 rounded-lg text-xs">ยกเลิก</button>
+    </div>
+  </div>
+
+  <!-- 7. Modal Reset Password -->
   <div id="setPassModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 max-w-sm w-full p-6 rounded-2xl">
-      <h3 class="text-lg font-bold text-white mb-2">ตั้งรหัสผ่าน</h3>
+      <h3 class="text-base font-bold text-white mb-2">ตั้งรหัสผ่านเข้าใช้งาน</h3>
       <p class="text-xs text-slate-400 mb-4" id="setpass-desc"></p>
-      <form id="setPassForm" class="space-y-3">
+      <form id="setPassForm" class="space-y-3 text-xs">
         <input type="hidden" id="setpass-username">
-        <div>
-          <label class="block text-xs text-slate-300 mb-1">รหัสผ่านใหม่</label>
-          <input type="password" id="new-password" required minlength="4" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none">
-        </div>
-        <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-medium">บันทึกรหัสผ่าน</button>
+        <input type="password" id="new-password" required minlength="4" placeholder="รหัสผ่านใหม่" class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold">บันทึกรหัสผ่าน</button>
       </form>
     </div>
   </div>
 
-  <!-- ================= JAVASCRIPT ================= -->
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxX-ypRAttGLUQFCamSZdjBteiO4IPBiur2ZvE1IfNWOlc_KNlLaup2ECINXqPftKlpg/exec";
     let currentUser = JSON.parse(localStorage.getItem('crru_user')) || null;
@@ -284,7 +363,6 @@
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
     function switchModal(from, to) { closeModal(from); openModal(to); }
 
-    // ฟังก์ชันยิง API แบบไม่มีปัญหา CORS
     async function apiPost(data) {
       const res = await fetch(SCRIPT_URL, {
         method: 'POST',
@@ -294,31 +372,41 @@
       return await res.json();
     }
 
+    // Role-based UI Update
     function updateUI() {
       if (currentUser) {
         document.getElementById('auth-buttons').classList.add('hidden');
         document.getElementById('user-profile').classList.remove('hidden');
         document.getElementById('user-profile').classList.add('flex');
-        document.getElementById('user-display-name').innerText = `👤 ${currentUser.fullname} (${currentUser.role})`;
+        document.getElementById('user-display-name').innerText = `👤 ${currentUser.fullname}`;
+        document.getElementById('user-display-role').innerText = `${currentUser.position || ''} (${currentUser.role})`;
 
+        // สมาชิกทุกคนเห็น 2 เมนูนี้
         document.getElementById('member-menu').classList.remove('hidden');
-        document.getElementById('schedule-section').classList.remove('hidden');
+        document.getElementById('jobs-section').classList.remove('hidden');
         document.getElementById('equipment-section').classList.remove('hidden');
+        loadMemberData();
 
+        // Admin และ Executive จะเห็นแผงจัดการ
+        if (currentUser.role === 'admin' || currentUser.role === 'executive') {
+          document.getElementById('manage-menu').classList.remove('hidden');
+          document.getElementById('management-panel').classList.remove('hidden');
+        }
+
+        // เฉพาะ Admin เท่านั้นที่เห็นส่วนอนุมัติสมาชิก
         if (currentUser.role === 'admin') {
-          document.getElementById('admin-menu').classList.remove('hidden');
-          document.getElementById('admin-panel').classList.remove('hidden');
+          document.getElementById('admin-approval-section').classList.remove('hidden');
           loadAdminMembers();
         }
-        loadMemberData();
       } else {
         document.getElementById('auth-buttons').classList.remove('hidden');
         document.getElementById('user-profile').classList.add('hidden');
         document.getElementById('member-menu').classList.add('hidden');
-        document.getElementById('admin-menu').classList.add('hidden');
-        document.getElementById('schedule-section').classList.add('hidden');
+        document.getElementById('jobs-section').classList.add('hidden');
         document.getElementById('equipment-section').classList.add('hidden');
-        document.getElementById('admin-panel').classList.add('hidden');
+        document.getElementById('manage-menu').classList.add('hidden');
+        document.getElementById('management-panel').classList.add('hidden');
+        document.getElementById('admin-approval-section').classList.add('hidden');
       }
       lucide.createIcons();
     }
@@ -330,7 +418,7 @@
       Swal.fire({ icon: 'info', title: 'ออกจากระบบเรียบร้อย', timer: 1200, showConfirmButton: false, background: '#0f172a', color: '#fff' });
     }
 
-    // 1. เข้าสู่ระบบ (Username & Password)
+    // 1. เข้าสู่ระบบ
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       Swal.showLoading();
@@ -364,166 +452,208 @@
         experience: document.getElementById('reg-exp').value
       });
       if (res.status === "success") {
-        Swal.fire({ icon: 'success', title: 'ส่งใบสมัครสำเร็จ', text: res.message, background: '#0f172a', color: '#fff' });
+        Swal.fire({ icon: 'success', title: 'สำเร็จ', text: res.message, background: '#0f172a', color: '#fff' });
         document.getElementById('registerForm').reset();
       } else {
         Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: res.message, background: '#0f172a', color: '#fff' });
       }
     });
 
-    // 3. อัปโหลดรูปภาพเข้า Google Drive
-    document.getElementById('uploadDriveForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const fileInput = document.getElementById('up-file');
-      if (!fileInput.files.length) return;
-
-      const file = fileInput.files[0];
-      const reader = new FileReader();
-
-      Swal.fire({
-        title: 'กำลังอัปโหลดรูปภาพลง Google Drive...',
-        text: 'กรุณารอสักครู่ ระบบกำลังประมวลผล',
-        allowOutsideClick: false,
-        didOpen: () => { Swal.showLoading(); },
-        background: '#0f172a',
-        color: '#fff'
-      });
-
-      reader.onload = async function() {
-        const payload = {
-          action: "uploadGallery",
-          fileData: reader.result,
-          fileName: file.name,
-          title: document.getElementById('up-title').value,
-          photographer: document.getElementById('up-photog').value,
-          category: document.getElementById('up-cat').value,
-          description: document.getElementById('up-desc').value
-        };
-
-        const res = await apiPost(payload);
-        if (res.status === "success") {
-          closeModal('uploadDriveModal');
-          document.getElementById('uploadDriveForm').reset();
-          Swal.fire({ icon: 'success', title: 'สำเร็จ!', text: res.message, background: '#0f172a', color: '#fff' });
-          loadGallery();
-        } else {
-          Swal.fire({ icon: 'error', title: 'อัปโหลดล้มเหลว', text: res.message, background: '#0f172a', color: '#fff' });
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-
-    // 4. ลืมรหัสผ่าน
-    document.getElementById('forgotForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      Swal.showLoading();
-      const res = await apiPost({
-        action: "forgotPassword",
-        input: document.getElementById('forgot-input').value.trim(),
-        webUrl: window.location.href.split('?')[0]
-      });
-      closeModal('forgotModal');
-      Swal.fire({ icon: res.status, title: res.message, background: '#0f172a', color: '#fff' });
-    });
-
-    // 5. ตั้งรหัสผ่านใหม่
-    document.getElementById('setPassForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      Swal.showLoading();
-      const res = await apiPost({
-        action: "setPassword",
-        username: document.getElementById('setpass-username').value,
-        newPassword: document.getElementById('new-password').value
-      });
-      if (res.status === "success") {
-        closeModal('setPassModal');
-        window.history.replaceState({}, document.title, window.location.pathname);
-        Swal.fire({ icon: 'success', title: 'สำเร็จ!', text: res.message, background: '#0f172a', color: '#fff' });
-      }
-    });
-
-    // 6. โหลด Gallery
+    // 3. โหลดภาพถ่าย (Gallery)
     async function loadGallery() {
+      const res = await fetch(`${SCRIPT_URL}?action=getGallery`);
+      const json = await res.json();
       const container = document.getElementById('gallery-container');
-      container.innerHTML = `<div class="col-span-full py-10 text-center text-slate-500"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-2 text-blue-500"></i>กำลังโหลดภาพถ่าย...</div>`;
-      lucide.createIcons();
-      try {
-        const res = await fetch(`${SCRIPT_URL}?action=getGallery`);
-        const json = await res.json();
-        if (json.data && json.data.length > 0) {
-          container.innerHTML = json.data.map(item => `
-            <div class="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-blue-900/60 transition shadow-lg flex flex-col">
-              <img src="${item.imageUrl}" class="w-full aspect-[4/3] object-cover bg-slate-950" onerror="this.src='https://via.placeholder.com/600x400?text=CRRU+Photo'">
-              <div class="p-4 flex-1 flex flex-col justify-between">
-                <div>
-                  ${item.category ? `<span class="text-[10px] text-blue-400 font-semibold uppercase">${item.category}</span>` : ''}
-                  <h3 class="font-bold text-white text-sm mt-0.5">${item.title || 'ไม่มีชื่อภาพ'}</h3>
-                  <p class="text-xs text-slate-400 mt-1">${item.description || ''}</p>
-                </div>
-                <div class="mt-3 pt-2 border-t border-slate-800/80 text-[11px] text-slate-500">
-                  📸 ${item.photographer || 'สมาชิกชมรม'}
-                </div>
-              </div>
+      if (json.data && json.data.length > 0) {
+        container.innerHTML = json.data.map(item => `
+          <div class="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-lg">
+            <img src="${item.imageUrl}" class="w-full aspect-[4/3] object-cover bg-slate-950" onerror="this.src='https://via.placeholder.com/600x400?text=CRRU+Photo'">
+            <div class="p-4">
+              <span class="text-[10px] text-blue-400 font-semibold uppercase">${item.category || 'Photo'}</span>
+              <h3 class="font-bold text-white text-sm mt-0.5">${item.title}</h3>
+              <p class="text-xs text-slate-400 mt-1">${item.description || ''}</p>
+              <div class="mt-3 text-[11px] text-slate-500">📸 ${item.photographer}</div>
             </div>
-          `).join('');
-        } else {
-          container.innerHTML = `<div class="col-span-full py-10 text-center text-slate-500">ยังไม่มีภาพถ่ายในระบบ</div>`;
-        }
-      } catch (e) {
-        container.innerHTML = `<div class="col-span-full py-10 text-center text-rose-400">โหลดข้อมูลไม่สำเร็จ</div>`;
+          </div>
+        `).join('');
+      } else {
+        container.innerHTML = `<div class="col-span-full py-8 text-center text-slate-500 text-xs">ยังไม่มีภาพถ่าย</div>`;
       }
-      lucide.createIcons();
     }
 
-    // 7. โหลดข้อมูลสมาชิก (ตารางงาน + อุปกรณ์)
+    // 4. โหลดวิดีโอ (Videos)
+    async function loadVideos() {
+      const res = await fetch(`${SCRIPT_URL}?action=getVideos`);
+      const json = await res.json();
+      const container = document.getElementById('video-container');
+      if (json.data && json.data.length > 0) {
+        container.innerHTML = json.data.map(item => {
+          let embedUrl = item.youtubeUrl;
+          if (embedUrl.includes("watch?v=")) embedUrl = embedUrl.replace("watch?v=", "embed/");
+          if (embedUrl.includes("youtu.be/")) embedUrl = embedUrl.replace("youtu.be/", "www.youtube.com/embed/");
+
+          return `
+            <div class="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 p-4">
+              <div class="aspect-video w-full rounded-xl overflow-hidden bg-black mb-3">
+                <iframe src="${embedUrl}" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+              </div>
+              <h3 class="font-bold text-white text-sm">${item.title}</h3>
+              <p class="text-xs text-slate-400 mt-1">${item.description || ''}</p>
+              <div class="mt-2 text-[11px] text-red-400 font-medium">🎬 ผู้สร้างสรรค์: ${item.creator}</div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        container.innerHTML = `<div class="col-span-full py-8 text-center text-slate-500 text-xs">ยังไม่มีวิดีโอ</div>`;
+      }
+    }
+
+    // 5. โหลดทำเนียบสมาชิก (Public Members)
+    async function loadPublicMembers() {
+      const res = await fetch(`${SCRIPT_URL}?action=getPublicMembers`);
+      const json = await res.json();
+      const container = document.getElementById('members-container');
+      if (json.data && json.data.length > 0) {
+        container.innerHTML = json.data.map(m => `
+          <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-xl text-center">
+            <div class="w-10 h-10 bg-blue-950 text-blue-400 font-bold rounded-full flex items-center justify-center mx-auto mb-2 text-sm">
+              ${m.fullname.charAt(0)}
+            </div>
+            <p class="font-medium text-white text-xs truncate">${m.fullname}</p>
+            <p class="text-[11px] text-blue-400 mt-0.5">${m.position}</p>
+            <p class="text-[10px] text-slate-500 mt-1 truncate">${m.faculty}</p>
+          </div>
+        `).join('');
+      }
+    }
+
+    // 6. โหลดข้อมูลงานและอุปกรณ์ (สำหรับสมาชิก)
     async function loadMemberData() {
+      // โหลดตารางงาน
       const sRes = await fetch(`${SCRIPT_URL}?action=getSchedules`);
       const sJson = await sRes.json();
       if (sJson.data) {
-        document.getElementById('schedule-list').innerHTML = sJson.data.map(s => `
-          <div class="p-4 bg-slate-900 border border-slate-800 rounded-2xl flex items-start gap-4">
-            <div class="bg-blue-950 text-blue-400 p-3 rounded-xl text-center min-w-[75px]">
-              <span class="text-xs font-bold block">${s.date}</span>
-            </div>
+        document.getElementById('job-list').innerHTML = sJson.data.map(job => `
+          <div class="p-4 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col justify-between">
             <div>
-              <h4 class="font-bold text-white text-sm">${s.title}</h4>
-              <p class="text-xs text-blue-400 mt-0.5">📍 ${s.location}</p>
-              <p class="text-xs text-slate-400 mt-1">${s.detail}</p>
+              <div class="flex justify-between items-start">
+                <span class="px-2 py-0.5 text-[10px] font-bold rounded bg-blue-950 text-blue-400 border border-blue-800">${job.date}</span>
+                <span class="text-[11px] text-slate-400">📍 ${job.location}</span>
+              </div>
+              <h4 class="font-bold text-white text-sm mt-2">${job.title}</h4>
+              <p class="text-xs text-slate-400 mt-1">${job.detail || ''}</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center">
+              <span class="text-[11px] text-slate-400 truncate max-w-[200px]">ช่างภาพ: <b class="text-blue-300">${job.assignedTo || 'ยังไม่มีใครรับ'}</b></span>
+              <button onclick="assignJob('${job.id}')" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold">✋ ลงชื่อรับงาน</button>
             </div>
           </div>
         `).join('');
       }
 
+      // โหลดอุปกรณ์
       const eRes = await fetch(`${SCRIPT_URL}?action=getEquipments`);
       const eJson = await eRes.json();
       if (eJson.data) {
         document.getElementById('equipment-tbody').innerHTML = eJson.data.map(eq => `
           <tr class="hover:bg-slate-950/40">
-            <td class="p-4 font-medium text-white">${eq.name}</td>
+            <td class="p-4 font-semibold text-white">${eq.name} <span class="text-[10px] text-slate-500 block">${eq.id}</span></td>
             <td class="p-4">${eq.category}</td>
-            <td class="p-4"><span class="px-2.5 py-0.5 rounded-full text-[11px] bg-emerald-950 text-emerald-400 border border-emerald-800">${eq.status}</span></td>
-            <td class="p-4 text-xs text-slate-400">${eq.note}</td>
+            <td class="p-4">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] ${eq.status === 'ว่าง' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-rose-950 text-rose-400 border border-rose-800'}">
+                ● ${eq.status}
+              </span>
+            </td>
+            <td class="p-4">${eq.currentUser || '-'}</td>
+            <td class="p-4">${eq.useDate || '-'}</td>
+            <td class="p-4 text-center">
+              ${eq.status === 'ว่าง' ? `
+                <button onclick="openBorrowModal('${eq.id}', '${eq.name}')" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-[11px]">เบิกใช้งาน</button>
+              ` : `
+                <button onclick="returnEquipment('${eq.id}')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[11px]">บันทึกคืน</button>
+              `}
+            </td>
           </tr>
         `).join('');
       }
     }
 
-    // 8. โหลดสมาชิกเพื่ออนุมัติ (Admin)
+    // รับงาน
+    async function assignJob(jobId) {
+      if (!currentUser) return;
+      Swal.showLoading();
+      const res = await apiPost({
+        action: "assignJob",
+        jobId: jobId,
+        fullname: currentUser.fullname
+      });
+      if (res.status === "success") {
+        Swal.fire({ icon: 'success', title: 'ลงชื่อรับงานสำเร็จ', background: '#0f172a', color: '#fff' });
+        loadMemberData();
+      }
+    }
+
+    // ยืม/คืนอุปกรณ์
+    function openBorrowModal(id, name) {
+      document.getElementById('borrow-equip-id').value = id;
+      document.getElementById('borrow-equip-name').innerText = `อุปกรณ์: ${name}`;
+      openModal('borrowModal');
+    }
+
+    document.getElementById('borrowForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      Swal.showLoading();
+      const res = await apiPost({
+        action: "borrowEquipment",
+        equipId: document.getElementById('borrow-equip-id').value,
+        fullname: currentUser.fullname,
+        useDate: document.getElementById('borrow-date').value,
+        note: document.getElementById('borrow-note').value
+      });
+      closeModal('borrowModal');
+      if (res.status === "success") {
+        Swal.fire({ icon: 'success', title: 'สำเร็จ', text: res.message, background: '#0f172a', color: '#fff' });
+        loadMemberData();
+      } else {
+        Swal.fire({ icon: 'error', title: 'ผิดพลาด', text: res.message, background: '#0f172a', color: '#fff' });
+      }
+    });
+
+    async function returnEquipment(equipId) {
+      Swal.showLoading();
+      const res = await apiPost({ action: "returnEquipment", equipId: equipId });
+      if (res.status === "success") {
+        Swal.fire({ icon: 'success', title: 'สำเร็จ', text: res.message, background: '#0f172a', color: '#fff' });
+        loadMemberData();
+      }
+    }
+
+    // 7. ส่วนของ Admin: โหลดรายชื่อเพื่ออนุมัติ
     async function loadAdminMembers() {
-      const res = await fetch(`${SCRIPT_URL}?action=getMembers`);
+      const res = await fetch(`${SCRIPT_URL}?action=getAdminMembers`);
       const json = await res.json();
       if (json.data) {
-        document.getElementById('member-approval-tbody').innerHTML = json.data.map(m => `
+        document.getElementById('member-approval-tbody').innerHTML = json.data.map((m, index) => `
           <tr>
             <td class="p-3 font-semibold text-white">${m.FullName}</td>
             <td class="p-3 font-mono text-blue-400">${m.Username}</td>
             <td class="p-3">${m.Faculty}</td>
             <td class="p-3">${m.Email}</td>
-            <td class="p-3">${m.Phone}</td>
-            <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] ${m.Status === 'Active' ? 'bg-green-900 text-green-300' : 'bg-amber-900 text-amber-300'}">${m.Status}</span></td>
+            <td class="p-3">
+              ${m.Status === 'Pending' ? `
+                <div class="space-y-1">
+                  <select id="role-select-${index}" class="p-1 rounded bg-slate-950 border border-slate-800 text-[11px]">
+                    <option value="member">สมาชิกธรรมดา (member)</option>
+                    <option value="executive">ผู้บริหารชมรม (executive)</option>
+                    <option value="admin">แอดมินสูงสุด (admin)</option>
+                  </select>
+                  <input type="text" id="pos-input-${index}" placeholder="ระบุตำแหน่ง เช่น ช่างภาพ/ฝ่ายมีเดีย" class="w-full p-1 rounded bg-slate-950 border border-slate-800 text-[11px]">
+                </div>
+              ` : `<span class="text-blue-400 font-medium">${m.Position || '-'}</span> (${m.Role})`}
+            </td>
             <td class="p-3 text-center">
               ${m.Status === 'Pending' ? `
-                <button onclick="approveMember('${m.Email}')" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-medium">อนุมัติ</button>
+                <button onclick="approveMember('${m.Email}', ${index})" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold">อนุมัติ</button>
               ` : '<span class="text-slate-500 text-xs">อนุมัติแล้ว</span>'}
             </td>
           </tr>
@@ -531,20 +661,93 @@
       }
     }
 
-    async function approveMember(email) {
+    async function approveMember(email, index) {
+      const role = document.getElementById(`role-select-${index}`).value;
+      const position = document.getElementById(`pos-input-${index}`).value || "สมาชิกชมรม";
       Swal.showLoading();
       const res = await apiPost({
         action: "approve",
         email: email,
+        role: role,
+        position: position,
         webUrl: window.location.href.split('?')[0]
       });
       if (res.status === "success") {
-        Swal.fire({ icon: 'success', title: 'อนุมัติสำเร็จ', text: 'ระบบส่งอีเมลพร้อมลิงก์ตั้งรหัสผ่านให้เรียบร้อยแล้ว', background: '#0f172a', color: '#fff' });
+        Swal.fire({ icon: 'success', title: 'อนุมัติเรียบร้อย', text: res.message, background: '#0f172a', color: '#fff' });
         loadAdminMembers();
+        loadPublicMembers();
       }
     }
 
-    // เริ่มต้นระบบ
+    // 8. Event Add Data (Drive / Video / Job / Equipment)
+    document.getElementById('uploadDriveForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById('up-file');
+      if (!fileInput.files.length) return;
+      const reader = new FileReader();
+      Swal.showLoading();
+      reader.onload = async function() {
+        const res = await apiPost({
+          action: "uploadGallery",
+          fileData: reader.result,
+          fileName: fileInput.files[0].name,
+          title: document.getElementById('up-title').value,
+          photographer: document.getElementById('up-photog').value,
+          category: document.getElementById('up-cat').value,
+          description: document.getElementById('up-desc').value
+        });
+        closeModal('uploadDriveModal');
+        Swal.fire({ icon: 'success', title: 'สำเร็จ', text: res.message, background: '#0f172a', color: '#fff' });
+        loadGallery();
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    });
+
+    document.getElementById('addVideoForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      Swal.showLoading();
+      const res = await apiPost({
+        action: "addVideo",
+        title: document.getElementById('v-title').value,
+        youtubeUrl: document.getElementById('v-url').value,
+        creator: document.getElementById('v-creator').value,
+        description: document.getElementById('v-desc').value
+      });
+      closeModal('addVideoModal');
+      Swal.fire({ icon: 'success', title: 'สำเร็จ', text: res.message, background: '#0f172a', color: '#fff' });
+      loadVideos();
+    });
+
+    document.getElementById('addJobForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      Swal.showLoading();
+      const res = await apiPost({
+        action: "addSchedule",
+        date: document.getElementById('j-date').value,
+        title: document.getElementById('j-title').value,
+        location: document.getElementById('j-location').value,
+        detail: document.getElementById('j-detail').value
+      });
+      closeModal('addJobModal');
+      Swal.fire({ icon: 'success', title: 'สำเร็จ', text: res.message, background: '#0f172a', color: '#fff' });
+      loadMemberData();
+    });
+
+    document.getElementById('addEquipForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      Swal.showLoading();
+      const res = await apiPost({
+        action: "addEquipment",
+        name: document.getElementById('eq-name').value,
+        category: document.getElementById('eq-cat').value,
+        note: document.getElementById('eq-note').value
+      });
+      closeModal('addEquipModal');
+      Swal.fire({ icon: 'success', title: 'สำเร็จ', text: res.message, background: '#0f172a', color: '#fff' });
+      loadMemberData();
+    });
+
+    // ตรวจสอบ Parameter ตั้งรหัสผ่าน
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('action') === 'setpass' && urlParams.get('username')) {
@@ -554,6 +757,8 @@
       }
       updateUI();
       loadGallery();
+      loadVideos();
+      loadPublicMembers();
     });
   </script>
 </body>
