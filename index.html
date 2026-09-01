@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ชมรมช่างภาพ มรภ.เชียงราย | CRRU Photo Club</title>
+  <title>ชมรมช่างภาพ มหาวิทยาลัยราชภัฏเชียงราย | CRRU Photo Club</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -17,7 +17,7 @@
 <body class="bg-[#090d16] text-slate-100 min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
 
   <!-- ================= NAVBAR ================= -->
-  <header class="sticky top-0 z-50 bg-[#090d16]/85 backdrop-blur-md border-b border-slate-800">
+  <header class="sticky top-0 z-40 bg-[#090d16]/85 backdrop-blur-md border-b border-slate-800">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
       <a href="#" class="flex items-center gap-3">
         <img src="https://www.crru.ac.th/2021/images/logo_crru.png" alt="CRRU" class="h-10 w-auto" onerror="this.src='https://via.placeholder.com/40x40/1e293b/60a5fa?text=CRRU'">
@@ -29,24 +29,20 @@
         </div>
       </a>
 
-      <!-- Menu Items -->
       <nav class="hidden md:flex items-center space-x-6 text-sm text-slate-300">
         <a href="#gallery" class="hover:text-blue-400 transition">ภาพถ่าย</a>
-        <!-- สมาชิกจะเห็นเมนูนี้ -->
         <span id="member-menu" class="hidden space-x-6">
           <a href="#schedule-section" class="hover:text-blue-400 transition">ตารางงาน</a>
           <a href="#equipment-section" class="hover:text-blue-400 transition">อุปกรณ์ชมรม</a>
         </span>
-        <!-- แอดมินจะเห็นเมนูนี้ -->
         <span id="admin-menu" class="hidden">
           <a href="#admin-panel" class="text-amber-400 hover:text-amber-300 font-semibold transition">⚙️ เมนูแอดมิน</a>
         </span>
       </nav>
 
-      <!-- User Auth Bar -->
       <div id="auth-buttons" class="flex items-center gap-2">
-        <button onclick="openModal('loginModal')" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 transition">เข้าสู่ระบบ</button>
-        <a href="#join" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition">สมัครสมาชิก</a>
+        <button onclick="openModal('loginModal')" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-xl border border-slate-700 hover:bg-slate-800 transition">เข้าสู่ระบบ</button>
+        <a href="#join" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white transition">สมัครสมาชิก</a>
       </div>
       <div id="user-profile" class="hidden items-center gap-3">
         <span id="user-display-name" class="text-xs sm:text-sm text-blue-400 font-medium"></span>
@@ -59,13 +55,13 @@
   <section class="bg-gradient-hero py-20 px-4 text-center border-b border-slate-800">
     <div class="max-w-3xl mx-auto space-y-4">
       <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800/60 text-blue-300 text-xs font-medium">
-        <i data-lucide="camera" class="w-3.5 h-3.5"></i> พื้นที่สำหรับคนรักการถ่ายภาพ CRRU
+        <i data-lucide="camera" class="w-3.5 h-3.5"></i> CRRU Photography Club
       </div>
       <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
         เปิดมุมมองใหม่ <br><span class="text-gradient">บันทึกทุกความทรงจำ</span>
       </h1>
       <p class="text-slate-400 text-xs sm:text-sm max-w-xl mx-auto font-light">
-        ศูนย์กลางของช่างภาพมหาวิทยาลัยราชภัฏเชียงราย เรียนรู้ เทคนิค ยืมอุปกรณ์ และร่วมออกทริปสร้างผลงาน
+        ชมรมช่างภาพ มหาวิทยาลัยราชภัฏเชียงราย ศูนย์รวมคนรักการกดชัตเตอร์
       </p>
     </div>
   </section>
@@ -74,18 +70,16 @@
   <section id="schedule-section" class="hidden py-12 max-w-6xl mx-auto px-4">
     <div class="flex items-center gap-2 mb-6">
       <i data-lucide="calendar" class="w-5 h-5 text-blue-400"></i>
-      <h2 class="text-xl font-bold text-white">ตารางงานและกิจกรรมชมรม (เฉพาะสมาชิก)</h2>
+      <h2 class="text-xl font-bold text-white">ตารางงานและกิจกรรมชมรม</h2>
     </div>
-    <div id="schedule-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- ข้อมูลจะถูกโหลดผ่าน JS -->
-    </div>
+    <div id="schedule-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
   </section>
 
   <!-- ================= MEMBER ONLY: EQUIPMENTS ================= -->
   <section id="equipment-section" class="hidden py-12 max-w-6xl mx-auto px-4 border-t border-slate-800/60">
     <div class="flex items-center gap-2 mb-6">
       <i data-lucide="box" class="w-5 h-5 text-blue-400"></i>
-      <h2 class="text-xl font-bold text-white">รายการอุปกรณ์ชมรม (เฉพาะสมาชิก)</h2>
+      <h2 class="text-xl font-bold text-white">รายการอุปกรณ์ชมรม</h2>
     </div>
     <div class="overflow-x-auto bg-slate-900 rounded-2xl border border-slate-800">
       <table class="w-full text-left text-sm text-slate-300">
@@ -97,75 +91,72 @@
             <th class="p-4">สถานที่จัดเก็บ/หมายเหตุ</th>
           </tr>
         </thead>
-        <tbody id="equipment-tbody" class="divide-y divide-slate-800">
-          <!-- ข้อมูลจะถูกโหลดผ่าน JS -->
-        </tbody>
+        <tbody id="equipment-tbody" class="divide-y divide-slate-800"></tbody>
       </table>
     </div>
   </section>
 
-  <!-- ================= ADMIN ONLY: PANEL ================= -->
+  <!-- ================= ADMIN ONLY: DASHBOARD ================= -->
   <section id="admin-panel" class="hidden py-12 max-w-6xl mx-auto px-4 border-t border-amber-900/50 bg-amber-950/10 rounded-3xl mt-8">
     <div class="flex items-center gap-2 mb-6">
       <i data-lucide="shield-check" class="w-6 h-6 text-amber-400"></i>
-      <h2 class="text-2xl font-bold text-amber-400">ระบบจัดการผู้ดูแลระบบ (Admin Dashboard)</h2>
+      <h2 class="text-2xl font-bold text-amber-400">Admin Dashboard (ระบบจัดการ)</h2>
     </div>
 
-    <!-- เมนูเพิ่มข้อมูล -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-      <button onclick="openModal('addGalleryModal')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-left">
-        <p class="font-semibold text-white">+ อัปโหลดรูปแกลเลอรี</p>
-        <p class="text-xs text-slate-400">เพิ่มภาพผลงานเข้าสู่หน้าหลัก</p>
+      <button onclick="openModal('uploadDriveModal')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-left">
+        <p class="font-semibold text-white">📤 อัปโหลดรูปภาพสู่ Google Drive</p>
+        <p class="text-xs text-slate-400">เลือกไฟล์จากเครื่อง บันทึกลง Drive อัตโนมัติ</p>
       </button>
       <button onclick="openModal('addScheduleModal')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-left">
-        <p class="font-semibold text-white">+ เพิ่มตารางงาน/กิจกรรม</p>
-        <p class="text-xs text-slate-400">ประกาศวันจัดกิจกรรมหรือทริป</p>
+        <p class="font-semibold text-white">📅 เพิ่มตารางกิจกรรม</p>
+        <p class="text-xs text-slate-400">ประกาศวันจัดทริปหรือการอบรม</p>
       </button>
       <button onclick="openModal('addEquipModal')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-left">
-        <p class="font-semibold text-white">+ เพิ่มรายการอุปกรณ์</p>
-        <p class="text-xs text-slate-400">บันทึกกล้อง เลนส์ ไฟ เข้าสู่คลัง</p>
+        <p class="font-semibold text-white">📦 เพิ่มอุปกรณ์เข้าคลัง</p>
+        <p class="text-xs text-slate-400">บันทึกกล้อง เลนส์ และไฟ</p>
       </button>
     </div>
 
-    <!-- ตารางรออนุมัติสมาชิก -->
     <h3 class="text-lg font-semibold text-white mb-3">รายชื่อผู้สมัครที่รออนุมัติ</h3>
     <div class="overflow-x-auto bg-slate-900 rounded-2xl border border-slate-800">
       <table class="w-full text-left text-xs text-slate-300">
         <thead class="bg-slate-950 text-slate-400 border-b border-slate-800">
           <tr>
             <th class="p-3">ชื่อ-สกุล</th>
-            <th class="p-3">รหัสนักศึกษา</th>
+            <th class="p-3">Username / รหัส นศ.</th>
             <th class="p-3">คณะ</th>
             <th class="p-3">อีเมล</th>
             <th class="p-3">เบอร์โทร</th>
             <th class="p-3">สถานะ</th>
-            <th class="p-3 text-center">การกระทำ</th>
+            <th class="p-3 text-center">จัดการ</th>
           </tr>
         </thead>
-        <tbody id="member-approval-tbody" class="divide-y divide-slate-800">
-          <!-- โหลดข้อมูลผู้สมัคร -->
-        </tbody>
+        <tbody id="member-approval-tbody" class="divide-y divide-slate-800"></tbody>
       </table>
     </div>
   </section>
 
   <!-- ================= GALLERY ================= -->
   <section id="gallery" class="py-16 max-w-6xl mx-auto px-4 w-full">
-    <div class="mb-6">
-      <h2 class="text-2xl font-bold text-white">ผลงานภาพถ่ายสมาชิก</h2>
-      <p class="text-slate-400 text-xs">CRRU Photo Gallery Showcase</p>
+    <div class="mb-6 flex justify-between items-end">
+      <div>
+        <h2 class="text-2xl font-bold text-white">ภาพถ่ายในแกลเลอรี</h2>
+        <p class="text-slate-400 text-xs">CRRU Photography Collection</p>
+      </div>
+      <button onclick="loadGallery()" class="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1">
+        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> รีเฟรช
+      </button>
     </div>
-    <div id="gallery-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      <!-- แกลเลอรีภาพ -->
-    </div>
+    <div id="gallery-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
   </section>
 
-  <!-- ================= REGISTRATION ================= -->
+  <!-- ================= REGISTER FORM ================= -->
   <section id="join" class="py-16 max-w-2xl mx-auto px-4 w-full">
     <div class="bg-slate-900/80 border border-slate-800 p-6 sm:p-8 rounded-3xl shadow-2xl">
       <div class="text-center mb-6">
         <h2 class="text-2xl font-bold text-white">สมัครเข้าร่วมชมรม</h2>
-        <p class="text-slate-400 text-xs mt-1">หลังจากลงทะเบียน แอดมินจะทำการอนุมัติและส่งอีเมลแจ้งเพื่อตั้งรหัสผ่าน</p>
+        <p class="text-slate-400 text-xs mt-1">กรอกข้อมูลเพื่อรอแอดมินอนุมัติและรับลิงก์ตั้งรหัสผ่าน</p>
       </div>
       <form id="registerForm" class="space-y-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -174,13 +165,13 @@
             <input type="text" id="reg-name" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none">
           </div>
           <div>
-            <label class="block text-xs text-slate-300 mb-1">รหัสนักศึกษา *</label>
-            <input type="text" id="reg-id" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none">
+            <label class="block text-xs text-slate-300 mb-1">Username / รหัสนักศึกษา *</label>
+            <input type="text" id="reg-username" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none" placeholder="เช่น 6514630xx">
           </div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs text-slate-300 mb-1">คณะ / สาขา *</label>
+            <label class="block text-xs text-slate-300 mb-1">คณะ / สำนักวิชา *</label>
             <input type="text" id="reg-fac" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none">
           </div>
           <div>
@@ -189,34 +180,34 @@
           </div>
         </div>
         <div>
-          <label class="block text-xs text-slate-300 mb-1">อีเมล (ใช้รับลิงก์อนุมัติ) *</label>
-          <input type="email" id="reg-email" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none" placeholder="name@crru.ac.th หรือ gmail">
+          <label class="block text-xs text-slate-300 mb-1">อีเมล (เพื่อรับการอนุมัติและตั้งรหัสผ่าน) *</label>
+          <input type="email" id="reg-email" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none" placeholder="name@crru.ac.th">
         </div>
         <div>
-          <label class="block text-xs text-slate-300 mb-1">ประสบการณ์ / อุปกรณ์ที่ใช้</label>
-          <textarea id="reg-exp" rows="2" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none" placeholder="เช่น กล้อง Canon, หรือ มือถือ"></textarea>
+          <label class="block text-xs text-slate-300 mb-1">อุปกรณ์ที่มี / ประสบการณ์</label>
+          <textarea id="reg-exp" rows="2" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none"></textarea>
         </div>
-        <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-xl text-sm transition">ลงทะเบียนสมัครสมาชิก</button>
+        <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-xl text-sm transition">ส่งใบสมัคร</button>
       </form>
     </div>
   </section>
 
   <!-- ================= MODALS ================= -->
-  <!-- 1. Modal Login -->
-  <div id="loginModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 max-w-sm w-full p-6 rounded-2xl">
+  <!-- 1. Modal Login (Username & Password) -->
+  <div id="loginModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 max-w-sm w-full p-6 rounded-2xl shadow-2xl">
       <h3 class="text-lg font-bold text-white mb-4">เข้าสู่ระบบสมาชิก</h3>
       <form id="loginForm" class="space-y-3">
         <div>
-          <label class="block text-xs text-slate-300 mb-1">อีเมล</label>
-          <input type="email" id="login-email" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none">
+          <label class="block text-xs text-slate-300 mb-1">Username (รหัสนักศึกษา หรือ อีเมล)</label>
+          <input type="text" id="login-username" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none" placeholder="เช่น 6514630xx หรือ admin">
         </div>
         <div>
           <label class="block text-xs text-slate-300 mb-1">รหัสผ่าน</label>
-          <input type="password" id="login-pass" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none">
+          <input type="password" id="login-password" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none">
         </div>
-        <div class="flex justify-between items-center text-xs">
-          <button type="button" onclick="switchModal('loginModal', 'forgotModal')" class="text-blue-400 hover:underline">ลืมรหัสผ่าน?</button>
+        <div class="text-right">
+          <button type="button" onclick="switchModal('loginModal', 'forgotModal')" class="text-xs text-blue-400 hover:underline">ลืมรหัสผ่าน?</button>
         </div>
         <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-medium">เข้าสู่ระบบ</button>
       </form>
@@ -224,29 +215,57 @@
     </div>
   </div>
 
-  <!-- 2. Modal Forgot Password -->
-  <div id="forgotModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 max-w-sm w-full p-6 rounded-2xl">
-      <h3 class="text-lg font-bold text-white mb-2">ลืมรหัสผ่าน</h3>
-      <p class="text-xs text-slate-400 mb-4">กรอกอีเมลของคุณเพื่อรับลิงก์รีเซ็ตรหัสผ่านทางอีเมล</p>
-      <form id="forgotForm" class="space-y-3">
+  <!-- 2. Modal Upload to Drive (Admin) -->
+  <div id="uploadDriveModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 max-w-md w-full p-6 rounded-2xl shadow-2xl space-y-3">
+      <h3 class="font-bold text-white">อัปโหลดภาพลง Google Drive</h3>
+      <form id="uploadDriveForm" class="space-y-2.5 text-xs">
         <div>
-          <label class="block text-xs text-slate-300 mb-1">อีเมล</label>
-          <input type="email" id="forgot-email" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none">
+          <label class="text-slate-300 mb-1 block">เลือกไฟล์รูปภาพจากเครื่อง *</label>
+          <input type="file" id="up-file" accept="image/*" required class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-slate-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:bg-blue-600 file:text-white">
         </div>
-        <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-medium">ส่งลิงก์รีเซ็ต</button>
+        <div>
+          <label class="text-slate-300 mb-1 block">ชื่อภาพ *</label>
+          <input type="text" id="up-title" required placeholder="เช่น ทิวทัศน์ยามเย็น มรภ." class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        </div>
+        <div>
+          <label class="text-slate-300 mb-1 block">ชื่อช่างภาพ *</label>
+          <input type="text" id="up-photog" required placeholder="ชื่อสมาชิก หรือ ช่างภาพ" class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        </div>
+        <div>
+          <label class="text-slate-300 mb-1 block">หมวดหมู่</label>
+          <input type="text" id="up-cat" placeholder="Portrait, Landscape, Event" class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        </div>
+        <div>
+          <label class="text-slate-300 mb-1 block">คำอธิบายภาพ</label>
+          <textarea id="up-desc" rows="2" placeholder="รายละเอียดหรือสถานที่..." class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white"></textarea>
+        </div>
+        <button type="submit" id="btnUploadDrive" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold mt-2">เริ่มอัปโหลดเข้า Drive</button>
       </form>
-      <button onclick="switchModal('forgotModal', 'loginModal')" class="mt-3 w-full py-2 bg-slate-800 text-slate-400 rounded-xl text-xs hover:bg-slate-700">กลับไปเข้าสู่ระบบ</button>
+      <button onclick="closeModal('uploadDriveModal')" class="w-full py-1.5 bg-slate-800 text-slate-400 rounded-lg text-xs">ยกเลิก</button>
     </div>
   </div>
 
-  <!-- 3. Modal Set/Change Password -->
-  <div id="setPassModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <!-- 3. Modal Forgot Password -->
+  <div id="forgotModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 max-w-sm w-full p-6 rounded-2xl">
-      <h3 class="text-lg font-bold text-white mb-2">ตั้งรหัสผ่านใหม่</h3>
-      <p class="text-xs text-slate-400 mb-4" id="setpass-desc">กำหนดรหัสผ่านสำหรับเข้าใช้งาน</p>
+      <h3 class="text-lg font-bold text-white mb-2">ลืมรหัสผ่าน</h3>
+      <p class="text-xs text-slate-400 mb-4">กรอก Username หรือ อีเมลของคุณ เพื่อรับลิงก์รีเซ็ตรหัสผ่าน</p>
+      <form id="forgotForm" class="space-y-3">
+        <input type="text" id="forgot-input" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none" placeholder="Username หรือ อีเมล">
+        <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-medium">ส่งลิงก์รีเซ็ต</button>
+      </form>
+      <button onclick="switchModal('forgotModal', 'loginModal')" class="mt-3 w-full py-2 bg-slate-800 text-slate-400 rounded-xl text-xs hover:bg-slate-700">กลับ</button>
+    </div>
+  </div>
+
+  <!-- 4. Modal Set/Reset Password -->
+  <div id="setPassModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 max-w-sm w-full p-6 rounded-2xl">
+      <h3 class="text-lg font-bold text-white mb-2">ตั้งรหัสผ่าน</h3>
+      <p class="text-xs text-slate-400 mb-4" id="setpass-desc"></p>
       <form id="setPassForm" class="space-y-3">
-        <input type="hidden" id="setpass-email">
+        <input type="hidden" id="setpass-username">
         <div>
           <label class="block text-xs text-slate-300 mb-1">รหัสผ่านใหม่</label>
           <input type="password" id="new-password" required minlength="4" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm focus:border-blue-500 focus:outline-none">
@@ -256,46 +275,36 @@
     </div>
   </div>
 
-  <!-- 4. Modals สำหรับแอดมินเพิ่มข้อมูล -->
-  <div id="addGalleryModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 max-w-md w-full p-6 rounded-2xl space-y-3">
-      <h3 class="font-bold text-white">เพิ่มภาพในแกลเลอรี</h3>
-      <form id="addGalleryForm" class="space-y-2 text-xs">
-        <input type="text" id="g-title" placeholder="ชื่อภาพ" required class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800">
-        <input type="url" id="g-url" placeholder="URL รูปภาพ (ลิงก์ตรง)" required class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800">
-        <input type="text" id="g-photog" placeholder="ชื่อช่างภาพ" required class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800">
-        <input type="text" id="g-cat" placeholder="หมวดหมู่ (เช่น Portrait, Landscape)" class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800">
-        <textarea id="g-desc" placeholder="คำอธิบายภาพ" class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800"></textarea>
-        <button type="submit" class="w-full py-2 bg-blue-600 rounded-lg text-white font-semibold">บันทึก</button>
-      </form>
-      <button onclick="closeModal('addGalleryModal')" class="w-full py-1.5 bg-slate-800 text-slate-400 rounded-lg text-xs">ยกเลิก</button>
-    </div>
-  </div>
-
   <!-- ================= JAVASCRIPT ================= -->
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxX-ypRAttGLUQFCamSZdjBteiO4IPBiur2ZvE1IfNWOlc_KNlLaup2ECINXqPftKlpg/exec";
     let currentUser = JSON.parse(localStorage.getItem('crru_user')) || null;
 
-    // Modal Helpers
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
     function switchModal(from, to) { closeModal(from); openModal(to); }
 
-    // Init UI Based on Role
+    // ฟังก์ชันยิง API แบบไม่มีปัญหา CORS
+    async function apiPost(data) {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(data)
+      });
+      return await res.json();
+    }
+
     function updateUI() {
       if (currentUser) {
         document.getElementById('auth-buttons').classList.add('hidden');
         document.getElementById('user-profile').classList.remove('hidden');
         document.getElementById('user-profile').classList.add('flex');
-        document.getElementById('user-display-name').innerText = `👋 ${currentUser.fullname} (${currentUser.role})`;
+        document.getElementById('user-display-name').innerText = `👤 ${currentUser.fullname} (${currentUser.role})`;
 
-        // สมาชิกเห็นส่วนนี้
         document.getElementById('member-menu').classList.remove('hidden');
         document.getElementById('schedule-section').classList.remove('hidden');
         document.getElementById('equipment-section').classList.remove('hidden');
 
-        // แอดมินเห็นส่วนนี้
         if (currentUser.role === 'admin') {
           document.getElementById('admin-menu').classList.remove('hidden');
           document.getElementById('admin-panel').classList.remove('hidden');
@@ -318,49 +327,17 @@
       localStorage.removeItem('crru_user');
       currentUser = null;
       updateUI();
-      Swal.fire({ icon: 'info', title: 'ออกจากระบบแล้ว', timer: 1200, showConfirmButton: false, background: '#0f172a', color: '#fff' });
+      Swal.fire({ icon: 'info', title: 'ออกจากระบบเรียบร้อย', timer: 1200, showConfirmButton: false, background: '#0f172a', color: '#fff' });
     }
 
-    // Call API Helper
-    async function apiPost(data) {
-      const res = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(data)
-      });
-      return await res.json();
-    }
-
-    // 1. ลงทะเบียน
-    document.getElementById('registerForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      Swal.showLoading();
-      const payload = {
-        action: "register",
-        fullname: document.getElementById('reg-name').value,
-        studentId: document.getElementById('reg-id').value,
-        faculty: document.getElementById('reg-fac').value,
-        phone: document.getElementById('reg-phone').value,
-        email: document.getElementById('reg-email').value,
-        experience: document.getElementById('reg-exp').value
-      };
-      const res = await apiPost(payload);
-      if (res.status === "success") {
-        Swal.fire({ icon: 'success', title: 'สำเร็จ!', text: res.message, background: '#0f172a', color: '#fff' });
-        document.getElementById('registerForm').reset();
-      } else {
-        Swal.fire({ icon: 'error', title: 'ข้อผิดพลาด', text: res.message, background: '#0f172a', color: '#fff' });
-      }
-    });
-
-    // 2. ล็อกอิน
+    // 1. เข้าสู่ระบบ (Username & Password)
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       Swal.showLoading();
       const res = await apiPost({
         action: "login",
-        email: document.getElementById('login-email').value,
-        password: document.getElementById('login-pass').value
+        username: document.getElementById('login-username').value.trim(),
+        password: document.getElementById('login-password').value.trim()
       });
       if (res.status === "success") {
         currentUser = res.user;
@@ -373,26 +350,89 @@
       }
     });
 
-    // 3. ลืมรหัสผ่าน
+    // 2. สมัครสมาชิก
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      Swal.showLoading();
+      const res = await apiPost({
+        action: "register",
+        fullname: document.getElementById('reg-name').value,
+        username: document.getElementById('reg-username').value.trim(),
+        faculty: document.getElementById('reg-fac').value,
+        phone: document.getElementById('reg-phone').value,
+        email: document.getElementById('reg-email').value.trim(),
+        experience: document.getElementById('reg-exp').value
+      });
+      if (res.status === "success") {
+        Swal.fire({ icon: 'success', title: 'ส่งใบสมัครสำเร็จ', text: res.message, background: '#0f172a', color: '#fff' });
+        document.getElementById('registerForm').reset();
+      } else {
+        Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: res.message, background: '#0f172a', color: '#fff' });
+      }
+    });
+
+    // 3. อัปโหลดรูปภาพเข้า Google Drive
+    document.getElementById('uploadDriveForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById('up-file');
+      if (!fileInput.files.length) return;
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      Swal.fire({
+        title: 'กำลังอัปโหลดรูปภาพลง Google Drive...',
+        text: 'กรุณารอสักครู่ ระบบกำลังประมวลผล',
+        allowOutsideClick: false,
+        didOpen: () => { Swal.showLoading(); },
+        background: '#0f172a',
+        color: '#fff'
+      });
+
+      reader.onload = async function() {
+        const payload = {
+          action: "uploadGallery",
+          fileData: reader.result,
+          fileName: file.name,
+          title: document.getElementById('up-title').value,
+          photographer: document.getElementById('up-photog').value,
+          category: document.getElementById('up-cat').value,
+          description: document.getElementById('up-desc').value
+        };
+
+        const res = await apiPost(payload);
+        if (res.status === "success") {
+          closeModal('uploadDriveModal');
+          document.getElementById('uploadDriveForm').reset();
+          Swal.fire({ icon: 'success', title: 'สำเร็จ!', text: res.message, background: '#0f172a', color: '#fff' });
+          loadGallery();
+        } else {
+          Swal.fire({ icon: 'error', title: 'อัปโหลดล้มเหลว', text: res.message, background: '#0f172a', color: '#fff' });
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // 4. ลืมรหัสผ่าน
     document.getElementById('forgotForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       Swal.showLoading();
       const res = await apiPost({
         action: "forgotPassword",
-        email: document.getElementById('forgot-email').value,
+        input: document.getElementById('forgot-input').value.trim(),
         webUrl: window.location.href.split('?')[0]
       });
       closeModal('forgotModal');
       Swal.fire({ icon: res.status, title: res.message, background: '#0f172a', color: '#fff' });
     });
 
-    // 4. ตั้งรหัสผ่านใหม่ (จากลิงก์อีเมล)
+    // 5. ตั้งรหัสผ่านใหม่
     document.getElementById('setPassForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       Swal.showLoading();
       const res = await apiPost({
         action: "setPassword",
-        email: document.getElementById('setpass-email').value,
+        username: document.getElementById('setpass-username').value,
         newPassword: document.getElementById('new-password').value
       });
       if (res.status === "success") {
@@ -402,29 +442,41 @@
       }
     });
 
-    // 5. โหลด Gallery
+    // 6. โหลด Gallery
     async function loadGallery() {
-      const res = await fetch(`${SCRIPT_URL}?action=getGallery`);
-      const json = await res.json();
       const container = document.getElementById('gallery-container');
-      if (json.data && json.data.length > 0) {
-        container.innerHTML = json.data.map(item => `
-          <div class="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800">
-            <img src="${item.imageUrl}" class="w-full aspect-[4/3] object-cover" onerror="this.src='https://via.placeholder.com/400x300?text=CRRU+Photo'">
-            <div class="p-4">
-              <span class="text-[10px] text-blue-400 font-semibold uppercase">${item.category || ''}</span>
-              <h3 class="font-bold text-white text-sm">${item.title}</h3>
-              <p class="text-xs text-slate-400 mt-1">${item.description || ''}</p>
-              <div class="mt-3 text-[11px] text-slate-500">📸 ${item.photographer}</div>
+      container.innerHTML = `<div class="col-span-full py-10 text-center text-slate-500"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-2 text-blue-500"></i>กำลังโหลดภาพถ่าย...</div>`;
+      lucide.createIcons();
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=getGallery`);
+        const json = await res.json();
+        if (json.data && json.data.length > 0) {
+          container.innerHTML = json.data.map(item => `
+            <div class="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-blue-900/60 transition shadow-lg flex flex-col">
+              <img src="${item.imageUrl}" class="w-full aspect-[4/3] object-cover bg-slate-950" onerror="this.src='https://via.placeholder.com/600x400?text=CRRU+Photo'">
+              <div class="p-4 flex-1 flex flex-col justify-between">
+                <div>
+                  ${item.category ? `<span class="text-[10px] text-blue-400 font-semibold uppercase">${item.category}</span>` : ''}
+                  <h3 class="font-bold text-white text-sm mt-0.5">${item.title || 'ไม่มีชื่อภาพ'}</h3>
+                  <p class="text-xs text-slate-400 mt-1">${item.description || ''}</p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-800/80 text-[11px] text-slate-500">
+                  📸 ${item.photographer || 'สมาชิกชมรม'}
+                </div>
+              </div>
             </div>
-          </div>
-        `).join('');
+          `).join('');
+        } else {
+          container.innerHTML = `<div class="col-span-full py-10 text-center text-slate-500">ยังไม่มีภาพถ่ายในระบบ</div>`;
+        }
+      } catch (e) {
+        container.innerHTML = `<div class="col-span-full py-10 text-center text-rose-400">โหลดข้อมูลไม่สำเร็จ</div>`;
       }
+      lucide.createIcons();
     }
 
-    // 6. โหลดข้อมูลสมาชิก (ตารางงาน + อุปกรณ์)
+    // 7. โหลดข้อมูลสมาชิก (ตารางงาน + อุปกรณ์)
     async function loadMemberData() {
-      // โหลดตารางงาน
       const sRes = await fetch(`${SCRIPT_URL}?action=getSchedules`);
       const sJson = await sRes.json();
       if (sJson.data) {
@@ -442,7 +494,6 @@
         `).join('');
       }
 
-      // โหลดอุปกรณ์
       const eRes = await fetch(`${SCRIPT_URL}?action=getEquipments`);
       const eJson = await eRes.json();
       if (eJson.data) {
@@ -457,16 +508,15 @@
       }
     }
 
-    // 7. โหลดข้อมูลรายชื่อให้อนุมัติ (Admin)
+    // 8. โหลดสมาชิกเพื่ออนุมัติ (Admin)
     async function loadAdminMembers() {
       const res = await fetch(`${SCRIPT_URL}?action=getMembers`);
       const json = await res.json();
       if (json.data) {
-        const tbody = document.getElementById('member-approval-tbody');
-        tbody.innerHTML = json.data.map(m => `
+        document.getElementById('member-approval-tbody').innerHTML = json.data.map(m => `
           <tr>
             <td class="p-3 font-semibold text-white">${m.FullName}</td>
-            <td class="p-3">${m.StudentId}</td>
+            <td class="p-3 font-mono text-blue-400">${m.Username}</td>
             <td class="p-3">${m.Faculty}</td>
             <td class="p-3">${m.Email}</td>
             <td class="p-3">${m.Phone}</td>
@@ -489,34 +539,17 @@
         webUrl: window.location.href.split('?')[0]
       });
       if (res.status === "success") {
-        Swal.fire({ icon: 'success', title: 'อนุมัติสำเร็จ', text: 'ระบบได้ส่งอีเมลตั้งรหัสผ่านให้ผู้สมัครแล้ว', background: '#0f172a', color: '#fff' });
+        Swal.fire({ icon: 'success', title: 'อนุมัติสำเร็จ', text: 'ระบบส่งอีเมลพร้อมลิงก์ตั้งรหัสผ่านให้เรียบร้อยแล้ว', background: '#0f172a', color: '#fff' });
         loadAdminMembers();
       }
     }
 
-    // 8. Admin เพิ่มแกลเลอรี
-    document.getElementById('addGalleryForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      Swal.showLoading();
-      const res = await apiPost({
-        action: "addGallery",
-        title: document.getElementById('g-title').value,
-        imageUrl: document.getElementById('g-url').value,
-        photographer: document.getElementById('g-photog').value,
-        category: document.getElementById('g-cat').value,
-        description: document.getElementById('g-desc').value
-      });
-      closeModal('addGalleryModal');
-      Swal.fire({ icon: 'success', title: res.message, background: '#0f172a', color: '#fff' });
-      loadGallery();
-    });
-
-    // Check URL Parameters (ถ้ามาจากอีเมลตั้งรหัสผ่าน)
+    // เริ่มต้นระบบ
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('action') === 'setpass' && urlParams.get('email')) {
-        document.getElementById('setpass-email').value = urlParams.get('email');
-        document.getElementById('setpass-desc').innerText = `กำหนดรหัสผ่านสำหรับ: ${urlParams.get('email')}`;
+      if (urlParams.get('action') === 'setpass' && urlParams.get('username')) {
+        document.getElementById('setpass-username').value = urlParams.get('username');
+        document.getElementById('setpass-desc').innerText = `ตั้งรหัสผ่านสำหรับ Username: ${urlParams.get('username')}`;
         openModal('setPassModal');
       }
       updateUI();
