@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบผู้ดูแล | CRRU Photo Club Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>body { font-family: 'Prompt', sans-serif; }</style>
+</head>
+<body class="bg-[#090d16] text-slate-100 min-h-screen flex flex-col selection:bg-amber-600">
+
+  <!-- Admin Top Bar -->
+  <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-400 hover:text-white text-xs flex items-center gap-1">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> กลับหน้าหลัก
+        </a>
+        <h1 class="text-base sm:text-lg font-bold text-amber-400 flex items-center gap-2">
+          <i data-lucide="shield" class="w-5 h-5"></i> แผงจัดการผู้ดูแลระบบ (Admin Panel)
+        </h1>
+      </div>
+      <div id="admin-user-tag" class="text-xs text-slate-400"></div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-8">
+
+    <!-- บัตรสรุปสถานะระบบ -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl flex items-center gap-4">
+        <div class="p-3 bg-amber-950/80 text-amber-400 rounded-xl"><i data-lucide="user-check" class="w-6 h-6"></i></div>
+        <div>
+          <p class="text-xs text-slate-400">สมาชิกที่รออนุมัติ</p>
+          <p id="stat-pending" class="text-2xl font-bold text-white">0</p>
+        </div>
+      </div>
+      <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl flex items-center gap-4">
+        <div class="p-3 bg-blue-950/80 text-blue-400 rounded-xl"><i data-lucide="users" class="w-6 h-6"></i></div>
+        <div>
+          <p class="text-xs text-slate-400">สมาชิกทั้งหมดที่ใช้งานอยู่</p>
+          <p id="stat-active" class="text-2xl font-bold text-white">0</p>
+        </div>
+      </div>
+      <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl flex items-center gap-4">
+        <div class="p-3 bg-emerald-950/80 text-emerald-400 rounded-xl"><i data-lucide="camera" class="w-6 h-6"></i></div>
+        <div>
+          <p class="text-xs text-slate-400">อุปกรณ์ทั้งหมดในคลัง</p>
+          <p id="stat-equip" class="text-2xl font-bold text-white">0</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ตารางอนุมัติสมาชิก -->
+    <div class="space-y-4">
+      <div class="flex justify-between items-center">
+        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="user-plus" class="w-5 h-5 text-blue-400"></i> จัดการและอนุมัติสมาชิกใหม่
+        </h2>
+        <button onclick="loadAdminMembers()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs flex items-center gap-1">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> รีเฟรช
+        </button>
+      </div>
+
+      <div class="overflow-x-auto bg-slate-900 rounded-2xl border border-slate-800 shadow-xl">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 uppercase text-[11px]">
+            <tr>
+              <th class="p-4">ชื่อ-สกุล</th>
+              <th class="p-4">รหัสนักศึกษา</th>
+              <th class="p-4">คณะ/สำนัก</th>
+              <th class="p-4">เบอร์โทร</th>
+              <th class="p-4">กำหนดบทบาทและตำแหน่ง</th>
+              <th class="p-4 text-center">การจัดการ</th>
+            </tr>
+          </thead>
+          <tbody id="member-approval-tbody" class="divide-y divide-slate-800"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxX-ypRAttGLUQFCamSZdjBteiO4IPBiur2ZvE1IfNWOlc_KNlLaup2ECINXqPftKlpg/exec";
+    const currentUser = JSON.parse(localStorage.getItem('crru_user')) || null;
+
+    // ตรวจสอบสิทธิ์ Admin
+    if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'executive')) {
+      alert('หน้านี้สำหรับแอดมินและผู้บริหารชมรมเท่านั้น');
+      window.location.href = "index.html";
+    }
+
+    document.getElementById('admin-user-tag').innerText = `เข้าสู่ระบบโดย: ${currentUser.fullname} (${currentUser.role})`;
+
+    async function apiPost(data) {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(data)
+      });
+      return await res.json();
+    }
+
+    async function loadAdminMembers() {
+      const [uRes, eqRes] = await Promise.all([
+        fetch(`${SCRIPT_URL}?action=getAdminMembers`),
+        fetch(`${SCRIPT_URL}?action=getEquipments`)
+      ]);
+      const uJson = await uRes.json();
+      const eqJson = await eqRes.json();
+
+      if (uJson.data) {
+        let pendingCount = 0;
+        let activeCount = 0;
+
+        document.getElementById('member-approval-tbody').innerHTML = uJson.data.map((m, index) => {
+          if (m.Status === 'Pending') pendingCount++;
+          if (m.Status === 'Active') activeCount++;
+
+          return `
+            <tr class="hover:bg-slate-950/40">
+              <td class="p-4 font-semibold text-white">${m.FullName}</td>
+              <td class="p-4 font-mono text-blue-400">${m.StudentId}</td>
+              <td class="p-4">${m.Faculty}</td>
+              <td class="p-4">${m.Phone || '-'}</td>
+              <td class="p-4">
+                ${m.Status === 'Pending' ? `
+                  <div class="space-y-1.5">
+                    <select id="role-select-${index}" class="p-1.5 rounded-lg bg-slate-950 border border-slate-700 text-[11px] text-white">
+                      <option value="member">สมาชิกทั่วไป (member)</option>
+                      <option value="executive">ผู้บริหารชมรม (executive)</option>
+                      <option value="admin">แอดมินสูงสุด (admin)</option>
+                    </select>
+                    <select id="skill-select-${index}" class="p-1.5 rounded-lg bg-slate-950 border border-slate-700 text-[11px] text-white">
+                      <option value="photo" ${m.SkillType === 'photo' ? 'selected' : ''}>📸 สายช่างภาพ (Photo)</option>
+                      <option value="video" ${m.SkillType === 'video' ? 'selected' : ''}>🎬 สายช่างวิดีโอ (Video)</option>
+                      <option value="all" ${m.SkillType === 'all' ? 'selected' : ''}>📸🎬 ทำได้ทั้งสองสาย (All)</option>
+                    </select>
+                    <input type="text" id="pos-input-${index}" placeholder="ระบุตำแหน่ง เช่น ช่างภาพ/ฝ่ายมีเดีย" value="${m.Position === 'รออนุมัติ' ? 'สมาชิกชมรม' : m.Position}" class="w-full p-1.5 rounded-lg bg-slate-950 border border-slate-700 text-[11px] text-white">
+                  </div>
+                ` : `<span class="text-blue-400 font-semibold">${m.Position || '-'}</span> (${m.SkillType || 'photo'}) - <span class="text-emerald-400 font-bold">${m.Role}</span>`}
+              </td>
+              <td class="p-4 text-center">
+                ${m.Status === 'Pending' ? `
+                  <div class="flex items-center justify-center gap-2">
+                    <button onclick="approveMember('${m.StudentId}', ${index})" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold">อนุมัติ</button>
+                    <button onclick="rejectMember('${m.StudentId}')" class="px-2.5 py-1 bg-rose-900/60 hover:bg-rose-800 text-rose-300 border border-rose-700 rounded-lg text-xs">ปฏิเสธ</button>
+                  </div>
+                ` : '<span class="text-slate-500 text-xs">อนุมัติแล้ว</span>'}
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+        document.getElementById('stat-pending').innerText = pendingCount;
+        document.getElementById('stat-active').innerText = activeCount;
+      }
+
+      if (eqJson.data) {
+        document.getElementById('stat-equip').innerText = eqJson.data.length;
+      }
+      lucide.createIcons();
+    }
+
+    async function approveMember(studentId, index) {
+      const role = document.getElementById(`role-select-${index}`).value;
+      const skillType = document.getElementById(`skill-select-${index}`).value;
+      const position = document.getElementById(`pos-input-${index}`).value || "สมาชิกชมรม";
+
+      Swal.showLoading();
+      const res = await apiPost({
+        action: "approve",
+        studentId: studentId,
+        role: role,
+        skillType: skillType,
+        position: position
+      });
+      if (res.status === "success") {
+        Swal.fire({ icon: 'success', title: 'อนุมัติสำเร็จ', text: res.message, background: '#0f172a', color: '#fff' });
+        loadAdminMembers();
+      }
+    }
+
+    async function rejectMember(studentId) {
+      if (!confirm('ต้องการปฏิเสธและลบข้อมูลใบสมัครนี้ใช่หรือไม่?')) return;
+      Swal.showLoading();
+      const res = await apiPost({ action: "rejectMember", studentId: studentId });
+      if (res.status === "success") {
+        Swal.fire({ icon: 'success', title: 'ลบข้อมูลแล้ว', background: '#0f172a', color: '#fff' });
+        loadAdminMembers();
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadAdminMembers();
+    });
+  </script>
+</body>
+</html>
