@@ -3,592 +3,514 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ระบบบริหารจัดการชมรม CRRU Photo Club</title>
+<title>ชมรมช่างภาพ มหาวิทยาลัยราชภัฏเชียงราย | CRRU Photo Club</title>
+<link rel="preconnect" href="https://script.google.com">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z'/><circle cx='12' cy='13' r='3'/></svg>">
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-  body { font-family: 'Prompt', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
-  .nav-btn.active { background: #2563eb; color: #ffffff; font-weight: 600; }
-  .pg { display: none; }
-  .pg.active { display: block; }
-  .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+body{font-family:'Prompt',sans-serif}
+.nav-btn.active{background:#2563eb;color:#fff;font-weight:600}
 </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between select-none">
+<body class="bg-[#090d16] text-slate-100 min-h-screen flex flex-col">
 
-<!-- Custom Toast Notification ของเว็บไซต์ -->
-<div id="toast" class="fixed top-5 right-5 z-50 transform -translate-y-32 opacity-0 transition-all duration-300 px-4 py-3 rounded-xl text-sm font-medium shadow-2xl flex items-center gap-2 border border-slate-700 pointer-events-none"></div>
-
-<!-- Header Navigation -->
-<header class="sticky top-0 z-40 bg-[#0b0f19]/90 border-b border-slate-800 backdrop-blur-md">
-  <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-    <div onclick="nav('schedule')" class="cursor-pointer font-bold text-lg text-white flex items-center gap-2">
-      <span class="p-1.5 bg-blue-600 rounded-lg text-xs">📷</span>
-      <span>CRRU <span class="text-blue-500">PHOTO</span></span>
-    </div>
-    <nav class="hidden md:flex gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800 text-xs">
-      <button onclick="nav('schedule')" id="nav-schedule" class="nav-btn px-3 py-1.5 rounded-lg active transition">🗓️ ตารางงานชมรม</button>
-      <button onclick="nav('gallery')" id="nav-gallery" class="nav-btn px-3 py-1.5 rounded-lg transition">📸 ผลงาน/วิดีโอ</button>
-      <button onclick="nav('equipment')" id="nav-equipment" class="nav-btn px-3 py-1.5 rounded-lg transition">📦 การจองอุปกรณ์</button>
-      <button onclick="nav('members')" id="nav-members" class="nav-btn px-3 py-1.5 rounded-lg hidden transition">👥 จัดการสมาชิก</button>
+<header class="sticky top-0 z-40 bg-[#090d16]/95 backdrop-blur-md border-b border-slate-800">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+    <a href="javascript:void(0)" onclick="nav('home')" class="flex items-center gap-3 shrink-0">
+      <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-700 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-600/20">
+        <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+      </div>
+      <div>
+        <div class="text-base sm:text-lg font-bold text-white leading-tight">CRRU <span class="text-blue-500">PHOTO</span></div>
+        <p class="text-[10px] text-slate-400">ชมรมช่างภาพ มรภ.เชียงราย</p>
+      </div>
+    </a>
+    <nav class="hidden md:flex items-center gap-1.5 text-xs lg:text-sm bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800">
+      <button onclick="nav('home')" id="nav-home" class="nav-btn px-3.5 py-1.5 rounded-xl text-slate-300 active">📢 ข่าวสาร</button>
+      <button onclick="nav('gallery')" id="nav-gallery" class="nav-btn px-3.5 py-1.5 rounded-xl text-slate-300">📸 ผลงานภาพ</button>
+      <button onclick="nav('videos')" id="nav-videos" class="nav-btn px-3.5 py-1.5 rounded-xl text-slate-300">🎬 วิดีโอ</button>
+      <button onclick="nav('members')" id="nav-members" class="nav-btn px-3.5 py-1.5 rounded-xl text-slate-300">👥 สมาชิก</button>
+      <button onclick="nav('jobs')" id="nav-jobs" class="nav-btn hidden px-3.5 py-1.5 rounded-xl text-blue-300">📌 ตารางงาน</button>
+      <button onclick="nav('calendar')" id="nav-calendar" class="nav-btn hidden px-3.5 py-1.5 rounded-xl text-blue-300">📅 จองอุปกรณ์</button>
     </nav>
-    <div id="u-area">
-      <button onclick="openModal('mLogin')" class="text-xs px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg transition">เข้าสู่ระบบ</button>
+    <div class="flex items-center gap-2">
+      <span id="dot" class="w-2 h-2 rounded-full bg-slate-700"></span>
+      <div id="guest" class="flex items-center gap-2">
+        <button onclick="open_('mLogin')" class="text-xs px-3.5 py-1.5 rounded-xl border border-slate-700 hover:bg-slate-800">เข้าสู่ระบบ</button>
+        <button onclick="nav('join')" class="text-xs px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white">สมัครสมาชิก</button>
+      </div>
+      <div id="member" class="hidden items-center gap-3">
+        <div class="text-right hidden sm:block">
+          <span id="u-name" class="text-xs text-blue-400 font-semibold block"></span>
+          <span id="u-role" class="text-[10px] text-slate-400 block"></span>
+        </div>
+        <a href="admin.html" id="lnk-admin" class="hidden text-xs px-3 py-1.5 bg-amber-950/70 border border-amber-700 text-amber-300 rounded-xl">⚙️ แผงควบคุม</a>
+        <button onclick="logout()" class="text-xs px-3 py-1.5 bg-rose-950/60 border border-rose-800 text-rose-300 rounded-xl">ออก</button>
+      </div>
     </div>
+  </div>
+  <div class="flex md:hidden overflow-x-auto px-4 py-2 gap-2 border-t border-slate-800/60 bg-slate-950/50">
+    <button onclick="nav('home')" class="text-xs whitespace-nowrap px-3 py-1 rounded-lg bg-slate-900 text-slate-300">ข่าวสาร</button>
+    <button onclick="nav('gallery')" class="text-xs whitespace-nowrap px-3 py-1 rounded-lg bg-slate-900 text-slate-300">ผลงานภาพ</button>
+    <button onclick="nav('videos')" class="text-xs whitespace-nowrap px-3 py-1 rounded-lg bg-slate-900 text-slate-300">วิดีโอ</button>
+    <button onclick="nav('members')" class="text-xs whitespace-nowrap px-3 py-1 rounded-lg bg-slate-900 text-slate-300">สมาชิก</button>
+    <button onclick="nav('jobs')" id="mb-jobs" class="hidden text-xs whitespace-nowrap px-3 py-1 rounded-lg bg-blue-950 text-blue-300">ตารางงาน</button>
+    <button onclick="nav('calendar')" id="mb-cal" class="hidden text-xs whitespace-nowrap px-3 py-1 rounded-lg bg-blue-950 text-blue-300">จองอุปกรณ์</button>
   </div>
 </header>
 
-<!-- Main Body -->
-<main class="max-w-6xl mx-auto p-4 flex-1 w-full space-y-6">
+<main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 my-4">
 
-  <!-- 1. ตารางงานชมรม (Schedule & Team Assignment) -->
-  <section id="v-schedule" class="pg active space-y-4">
-    <div class="flex justify-between items-center">
-      <h2 class="text-lg font-bold border-l-4 border-blue-500 pl-3">🗓️ ตารางงานชมรม & การจัดทีม</h2>
-      <button onclick="sync()" class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1 transition">🔄 รีเฟรช</button>
+  <section id="v-home" class="pg space-y-5">
+    <div class="border-b border-slate-800 pb-4">
+      <h2 class="text-2xl font-bold text-white">📢 ประชาสัมพันธ์และข่าวสาร</h2>
+      <p class="text-xs text-slate-400">ข่าวสารและกิจกรรมจากชมรมช่างภาพ CRRU</p>
     </div>
-    <div id="c-schedule" class="grid gap-3 md:grid-cols-2"></div>
+    <div id="c-news" class="space-y-4"></div>
   </section>
 
-  <!-- 2. ผลงานและวิดีโอ (Gallery & Video Hub) -->
-  <section id="v-gallery" class="pg space-y-4">
-    <div class="flex flex-wrap justify-between items-center gap-2">
-      <h2 class="text-lg font-bold border-l-4 border-blue-500 pl-3">📸 ผลงานและวิดีโอ</h2>
-      <div id="media-btns" class="hidden flex gap-2">
-        <button onclick="openMediaModal('photo')" class="text-xs bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 rounded-lg font-medium transition">📷 อัปโหลดรูปภาพ</button>
-        <button onclick="openMediaModal('video')" class="text-xs bg-red-600 hover:bg-red-500 px-3 py-1.5 rounded-lg font-medium transition">🎥 อัปโหลดวิดีโอ</button>
-      </div>
+  <section id="v-gallery" class="pg hidden space-y-5">
+    <div class="border-b border-slate-800 pb-4">
+      <h2 class="text-2xl font-bold text-white">📸 ผลงานภาพถ่าย</h2>
+      <p class="text-xs text-slate-400">คลิกที่อัลบั้มเพื่อดูภาพทั้งหมดในผลงานนั้น</p>
     </div>
-    <div id="c-albums" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+    <div id="c-albums" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
   </section>
 
-  <!-- 3. การจองอุปกรณ์ (Equipment Booking Dashboard) -->
-  <section id="v-equipment" class="pg space-y-4">
-    <div class="flex justify-between items-center">
+  <section id="v-videos" class="pg hidden space-y-5">
+    <div class="border-b border-slate-800 pb-4">
+      <h2 class="text-2xl font-bold text-white">🎬 ผลงานวิดีโอ</h2>
+    </div>
+    <div id="c-videos" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+  </section>
+
+  <section id="v-members" class="pg hidden space-y-5">
+    <div class="border-b border-slate-800 pb-4">
+      <h2 class="text-2xl font-bold text-white">👥 ทำเนียบสมาชิกชมรม</h2>
+    </div>
+    <div id="c-members" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
+  </section>
+
+  <section id="v-join" class="pg hidden max-w-xl mx-auto">
+    <div class="bg-slate-900 border border-slate-800 p-6 sm:p-8 rounded-3xl">
+      <h2 class="text-2xl font-bold text-white text-center">สมัครเข้าร่วมชมรม</h2>
+      <p class="text-slate-400 text-xs mt-1 text-center mb-6">ใช้รหัสนักศึกษาในการสมัคร • รอแอดมินอนุมัติก่อนเข้าใช้งาน</p>
+      <form id="fReg" class="space-y-4 text-xs sm:text-sm">
+        <div><label class="block text-slate-300 mb-1">ชื่อ-นามสกุล *</label>
+          <input id="rg-name" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white"></div>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="block text-slate-300 mb-1">รหัสนักศึกษา *</label>
+            <input id="rg-sid" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white"></div>
+          <div><label class="block text-slate-300 mb-1">ตั้งรหัสผ่าน *</label>
+            <input type="password" id="rg-pass" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="block text-slate-300 mb-1">คณะ / สำนักวิชา *</label>
+            <input id="rg-fac" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white"></div>
+          <div><label class="block text-slate-300 mb-1">เบอร์โทรศัพท์ *</label>
+            <input id="rg-phone" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white"></div>
+        </div>
+        <div><label class="block text-slate-300 mb-1">สายงาน *</label>
+          <select id="rg-skill" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white">
+            <option value="photo">📸 ช่างภาพนิ่ง</option><option value="video">🎬 ช่างวิดีโอ</option><option value="all">📸🎬 ทั้งสองสาย</option>
+          </select></div>
+        <button class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl">ส่งใบสมัคร</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="v-jobs" class="pg hidden space-y-5">
+    <div class="border-b border-slate-800 pb-4">
+      <span class="px-2.5 py-0.5 rounded-full text-[10px] bg-blue-900 text-blue-300 font-semibold uppercase">Member Area</span>
+      <h2 class="text-2xl font-bold text-white mt-1">📌 ตารางงานถ่ายภาพและวิดีโอ</h2>
+      <p class="text-slate-400 text-xs">กดรับงานตามสายงานของคุณ แล้วรอแอดมินอนุมัติ</p>
+    </div>
+    <div id="c-jobs" class="space-y-4"></div>
+  </section>
+
+  <section id="v-calendar" class="pg hidden space-y-5">
+    <div class="border-b border-slate-800 pb-4 flex flex-wrap justify-between items-center gap-3">
       <div>
-        <h2 class="text-lg font-bold border-l-4 border-blue-500 pl-3">📦 ข้อมูลการจองอุปกรณ์</h2>
-        <p class="text-xs text-slate-400 mt-0.5">ตรวจสอบสถานะการยืม-คืนอุปกรณ์กล้องและอุปกรณ์เสริม</p>
+        <h2 class="text-2xl font-bold text-white">📅 ปฏิทินการจองอุปกรณ์</h2>
+        <p class="text-slate-400 text-xs">คลิกที่วันที่ต้องการเพื่อดูรายการจองและกดจองได้ทันที</p>
       </div>
-      <button onclick="openModal('mBookEquip')" class="text-xs bg-blue-600 hover:bg-blue-500 px-3.5 py-1.5 rounded-lg font-medium transition">➕ กดจองอุปกรณ์</button>
+      <button onclick="openEquip()" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold border border-slate-700">📦 คลังอุปกรณ์</button>
     </div>
-    <div id="c-equipment" class="space-y-2"></div>
-  </section>
-
-  <!-- 4. จัดการสมาชิก (Member Management - Management/Admin only) -->
-  <section id="v-members" class="pg space-y-4">
-    <div class="flex justify-between items-center">
-      <div>
-        <h2 class="text-lg font-bold border-l-4 border-blue-500 pl-3">👥 จัดการข้อมูลสมาชิก</h2>
-        <p class="text-xs text-slate-400 mt-0.5">สิทธิ์เฉพาะ: ทีมบริหาร และ แอดมิน</p>
+    <div class="flex justify-between items-center bg-slate-900 p-4 rounded-2xl border border-slate-800">
+      <button onclick="mv(-1)" class="px-3 py-1.5 hover:bg-slate-800 rounded-xl text-slate-300 text-sm">‹ เดือนก่อน</button>
+      <h3 id="cal-t" class="text-base font-bold text-white"></h3>
+      <button onclick="mv(1)" class="px-3 py-1.5 hover:bg-slate-800 rounded-xl text-slate-300 text-sm">เดือนถัดไป ›</button>
+    </div>
+    <div class="flex flex-wrap gap-3 text-[11px] text-slate-400 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> รออนุมัติ</span>
+      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span> อนุมัติแล้ว</span>
+      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span> กำลังใช้งาน</span>
+      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> คืนแล้ว</span>
+      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span> ยกเลิก</span>
+    </div>
+    <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
+      <div class="grid grid-cols-7 text-center font-semibold text-slate-400 text-xs border-b border-slate-800 bg-slate-950 py-3">
+        <div class="text-rose-400">อา.</div><div>จ.</div><div>อ.</div><div>พ.</div><div>พฤ.</div><div>ศ.</div><div class="text-blue-400">ส.</div>
       </div>
+      <div id="cal-g" class="grid grid-cols-7 gap-px bg-slate-800/50"></div>
     </div>
-    <div id="c-members" class="grid gap-2 md:grid-cols-2"></div>
   </section>
-
 </main>
 
-<footer class="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
-  CRRU Photo Club Management System &copy; 2026
-</footer>
-
-<!-- Modal เข้าสู่ระบบ -->
-<div id="mLogin" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-  <div class="bg-slate-900 border border-slate-700 p-6 rounded-2xl w-full max-w-sm space-y-4 shadow-2xl">
-    <h3 class="font-bold text-base text-white">🔐 เข้าสู่ระบบสมาชิก</h3>
-    <form class="space-y-3" onsubmit="submitLogin(event)">
-      <div>
-        <label class="text-xs text-slate-400">ชื่อผู้ใช้งาน (Username)</label>
-        <input id="login-username" required autocomplete="username" class="w-full mt-1 p-2 bg-slate-800 border border-slate-700 rounded text-sm text-white focus:outline-none focus:border-blue-500">
-      </div>
-      <div>
-        <label class="text-xs text-slate-400">รหัสผ่าน (Password)</label>
-        <input type="password" id="login-password" required autocomplete="current-password" class="w-full mt-1 p-2 bg-slate-800 border border-slate-700 rounded text-sm text-white focus:outline-none focus:border-blue-500">
-      </div>
-      <div class="flex gap-2 pt-2">
-        <button type="button" onclick="closeModal('mLogin')" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 rounded text-xs transition">ยกเลิก</button>
-        <button type="submit" id="btnSubmitLogin" class="flex-1 py-2 bg-blue-600 hover:bg-blue-500 rounded text-xs font-semibold transition">เข้าสู่ระบบ</button>
-      </div>
+<!-- MODALS -->
+<div id="mLogin" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-slate-900 border border-slate-800 max-w-sm w-full p-6 rounded-2xl">
+    <h3 class="text-lg font-bold text-white mb-4">เข้าสู่ระบบ</h3>
+    <form id="fLogin" class="space-y-3">
+      <input id="lg-sid" required placeholder="รหัสนักศึกษา" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white">
+      <input type="password" id="lg-pass" required placeholder="รหัสผ่าน" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white">
+      <div class="text-right"><a href="javascript:void(0)" onclick="close_('mLogin');open_('mForgot')" class="text-[11px] text-blue-400">ลืมรหัสผ่าน?</a></div>
+      <button class="w-full py-2 bg-blue-600 text-white rounded-xl text-sm font-semibold">เข้าสู่ระบบ</button>
     </form>
+    <button onclick="close_('mLogin')" class="mt-2 w-full py-2 bg-slate-800 text-slate-400 rounded-xl text-xs">ปิด</button>
   </div>
 </div>
 
-<!-- Modal อัปโหลดผลงาน (รูปภาพ / วิดีโอ) -->
-<div id="mMedia" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-  <div class="bg-slate-900 border border-slate-700 p-5 rounded-2xl w-full max-w-sm space-y-4 shadow-2xl">
-    <h3 id="mMediaTitle" class="font-bold text-base text-white">อัปโหลดผลงาน</h3>
-    <form id="fMedia" class="space-y-3" onsubmit="submitMedia(event)">
-      <input type="hidden" id="media-type">
-      <div>
-        <label class="text-xs text-slate-400">ชื่อผลงาน / ชื่องานกิจกรรม</label>
-        <input id="media-title" required class="w-full mt-1 p-2 bg-slate-800 border border-slate-700 rounded text-sm text-white focus:outline-none focus:border-blue-500">
-      </div>
-      <div id="media-photo-input">
-        <label class="text-xs text-slate-400">เลือกไฟล์รูปภาพ (JPG, PNG)</label>
-        <input type="file" id="media-file" accept="image/*" class="w-full mt-1 p-1.5 bg-slate-800 border border-slate-700 rounded text-xs text-slate-300">
-      </div>
-      <div id="media-video-input" class="hidden">
-        <label class="text-xs text-slate-400">ลิงก์วิดีโอ (YouTube / Google Drive / TikTok)</label>
-        <input id="media-url" placeholder="https://..." class="w-full mt-1 p-2 bg-slate-800 border border-slate-700 rounded text-sm text-white focus:outline-none focus:border-blue-500">
-      </div>
-      <div class="flex gap-2 pt-2">
-        <button type="button" onclick="closeModal('mMedia')" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 rounded text-xs transition">ยกเลิก</button>
-        <button type="submit" id="btnSubmitMedia" class="flex-1 py-2 bg-blue-600 hover:bg-blue-500 rounded text-xs font-semibold transition">โพสต์ผลงาน</button>
-      </div>
+<div id="mForgot" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-slate-900 border border-slate-800 max-w-sm w-full p-6 rounded-2xl">
+    <h3 class="text-base font-bold text-white mb-3">ค้นหารหัสผ่าน</h3>
+    <form id="fForgot" class="space-y-3 text-xs">
+      <input id="fg-sid" required placeholder="กรอกรหัสนักศึกษา" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white">
+      <button class="w-full py-2 bg-blue-600 text-white rounded-xl font-semibold">ค้นหา</button>
     </form>
+    <button onclick="close_('mForgot')" class="mt-2 w-full py-1.5 bg-slate-800 text-slate-400 rounded-xl text-xs">ปิด</button>
   </div>
 </div>
 
-<!-- Modal หน้าต่างกรอกข้อมูลการจองอุปกรณ์ -->
-<div id="mBookEquip" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-  <div class="bg-slate-900 border border-slate-700 p-5 rounded-2xl w-full max-w-sm space-y-4 shadow-2xl">
-    <h3 class="font-bold text-base text-white">📦 ฟอร์มจองอุปกรณ์</h3>
-    <form id="fBookEquip" class="space-y-3" onsubmit="submitBookEquipment(event)">
-      <div>
-        <label class="text-xs text-slate-400">ระบุอุปกรณ์ที่ต้องการจอง</label>
-        <input id="equip-name" required placeholder="เช่น Sony A7IV + เลนส์ 24-70 GM" class="w-full mt-1 p-2 bg-slate-800 border border-slate-700 rounded text-sm text-white focus:outline-none focus:border-blue-500">
-      </div>
-      <div class="grid grid-cols-2 gap-2">
-        <div>
-          <label class="text-xs text-slate-400">วันที่เริ่มใช้งาน</label>
-          <input type="date" id="equip-start" required class="w-full mt-1 p-2 bg-slate-800 border border-slate-700 rounded text-xs text-white focus:outline-none focus:border-blue-500">
-        </div>
-        <div>
-          <label class="text-xs text-slate-400">วันที่นำมาคืน</label>
-          <input type="date" id="equip-end" required class="w-full mt-1 p-2 bg-slate-800 border border-slate-700 rounded text-xs text-white focus:outline-none focus:border-blue-500">
-        </div>
-      </div>
-      <div>
-        <label class="text-xs text-slate-400">วัตถุประสงค์ / ชื่องานที่นำไปใช้</label>
-        <input id="equip-reason" required placeholder="เช่น ถ่ายงานปฐมนิเทศมหาวิทยาลัย" class="w-full mt-1 p-2 bg-slate-800 border border-slate-700 rounded text-sm text-white focus:outline-none focus:border-blue-500">
-      </div>
-      <div class="flex gap-2 pt-2">
-        <button type="button" onclick="closeModal('mBookEquip')" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 rounded text-xs transition">ยกเลิก</button>
-        <button type="submit" id="btnSubmitEquip" class="flex-1 py-2 bg-blue-600 hover:bg-blue-500 rounded text-xs font-semibold transition">ส่งคำขอจอง</button>
-      </div>
-    </form>
+<div id="mAlbum" class="fixed inset-0 bg-black/85 z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-slate-900 border border-slate-800 max-w-3xl w-full p-5 rounded-2xl max-h-[90vh] flex flex-col">
+    <div class="flex justify-between items-start border-b border-slate-800 pb-3 mb-3">
+      <div><h3 id="ab-title" class="font-bold text-white text-base"></h3>
+        <p id="ab-sub" class="text-[11px] text-slate-400 mt-0.5"></p></div>
+      <button onclick="close_('mAlbum')" class="text-slate-400 text-sm px-2">✕</button>
+    </div>
+    <div id="ab-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 overflow-y-auto"></div>
   </div>
 </div>
 
-<!-- Modal แก้ไขข้อมูลสมาชิก (สำหรับ แอดมิน / ทีมบริหาร) -->
-<div id="mEditMember" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-  <div class="bg-slate-900 border border-slate-700 p-5 rounded-2xl w-full max-w-sm space-y-4 shadow-2xl">
-    <h3 class="font-bold text-base text-white">✏️ แก้ไขข้อมูลสมาชิก</h3>
-    <form class="space-y-3" onsubmit="submitEditMember(event)">
-      <input type="hidden" id="edit-user-id">
-      <div>
-        <label class="text-xs text-slate-400">ชื่อ-นามสกุล</label>
-        <input id="edit-user-name" required class="w-full mt-1 p-2 bg-slate-800 border border-slate-700 rounded text-sm text-white focus:outline-none focus:border-blue-500">
-      </div>
-      <div>
-        <label class="text-xs text-slate-400">บทบาท / ตำแหน่งในชมรม</label>
-        <select id="edit-user-role" class="w-full mt-1 p-2 bg-slate-800 border border-slate-700 rounded text-sm text-white focus:outline-none focus:border-blue-500">
-          <option value="สมาชิก">สมาชิก</option>
-          <option value="ทีมบริหาร">ทีมบริหาร</option>
-          <option value="แอดมิน">แอดมิน</option>
-        </select>
-      </div>
-      <div>
-        <label class="text-xs text-slate-400">เบอร์โทรศัพท์ติดต่อ</label>
-        <input id="edit-user-phone" class="w-full mt-1 p-2 bg-slate-800 border border-slate-700 rounded text-sm text-white focus:outline-none focus:border-blue-500">
-      </div>
-      <div class="flex gap-2 pt-2">
-        <button type="button" onclick="closeModal('mEditMember')" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 rounded text-xs transition">ยกเลิก</button>
-        <button type="submit" id="btnSubmitMember" class="flex-1 py-2 bg-blue-600 hover:bg-blue-500 rounded text-xs font-semibold transition">บันทึกข้อมูล</button>
-      </div>
-    </form>
+<div id="mLight" class="fixed inset-0 bg-black/95 z-[60] hidden flex items-center justify-center p-4" onclick="close_('mLight')">
+  <img id="lb-img" class="max-w-full max-h-[90vh] rounded-xl object-contain">
+</div>
+
+<div id="mEquip" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-slate-900 border border-slate-800 max-w-2xl w-full p-6 rounded-2xl max-h-[85vh] flex flex-col">
+    <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-3">
+      <h3 class="font-bold text-white text-base">📦 คลังอุปกรณ์ชมรม</h3>
+      <button onclick="close_('mEquip')" class="text-slate-400 text-xs">✕</button>
+    </div>
+    <div class="overflow-y-auto flex-1">
+      <table class="w-full text-left text-xs">
+        <thead class="bg-slate-950 text-slate-400 sticky top-0 uppercase text-[10px]">
+          <tr><th class="p-2.5">รหัส</th><th class="p-2.5">ชื่ออุปกรณ์</th><th class="p-2.5">หมวดหมู่</th><th class="p-2.5">สถานะ</th><th class="p-2.5">ที่เก็บ</th></tr>
+        </thead>
+        <tbody id="tb-eq" class="divide-y divide-slate-800 text-slate-300"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="mDay" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-slate-900 border border-slate-800 max-w-lg w-full p-6 rounded-2xl max-h-[88vh] overflow-y-auto">
+    <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-3">
+      <h3 id="dy-title" class="font-bold text-white text-base"></h3>
+      <button onclick="close_('mDay')" class="text-slate-400 text-xs">✕</button>
+    </div>
+    <div id="dy-list" class="space-y-2.5 mb-4"></div>
+    <div id="dy-form" class="border-t border-slate-800 pt-4"></div>
   </div>
 </div>
 
 <script>
 const URL_ = "https://script.google.com/macros/s/AKfycbzxX-ypRAttGLUQFCamSZdjBteiO4IPBiur2ZvE1IfNWOlc_KNlLaup2ECINXqPftKlpg/exec";
-let DB = { news: [], schedules: [], jobAssigns: [], albums: [], equipmentBookings: [], users: [] };
-const $ = id => document.getElementById(id);
+let U = JSON.parse(localStorage.getItem('crru_user')||'null');
+let DB = JSON.parse(localStorage.getItem('crru_db')||'null') || {news:[],schedules:[],jobAssigns:[],equipments:[],bookings:[],albums:[],photos:[],videos:[],members:[],v:"0"};
+let cal = new Date(), busy=false;
+const $ = i=>document.getElementById(i);
+const open_ = i=>$(i).classList.remove('hidden');
+const close_ = i=>$(i).classList.add('hidden');
+const esc = s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
-// แสดง Toast Notification
-function notify(msg, type = 'success') {
-  const toast = $('toast');
-  toast.innerText = (type === 'success' ? '✅ ' : '⚠️ ') + msg;
-  toast.className = `fixed top-5 right-5 z-50 transition-all duration-300 px-4 py-3 rounded-xl text-sm font-medium shadow-2xl flex items-center gap-2 border ${
-    type === 'success' 
-      ? 'bg-emerald-950/90 border-emerald-600 text-emerald-200' 
-      : 'bg-red-950/90 border-red-600 text-red-200'
-  }`;
-  toast.style.transform = 'translateY(0)';
-  toast.style.opacity = '1';
-  setTimeout(() => {
-    toast.style.transform = 'translateY(-5rem)';
-    toast.style.opacity = '0';
-  }, 3500);
+async function rq(u,o={},ms=25000){
+  const c=new AbortController(), t=setTimeout(()=>c.abort(),ms);
+  try{ const r=await fetch(u,Object.assign({signal:c.signal},o)); return await r.json(); } finally{ clearTimeout(t); }
+}
+const post = d => rq(URL_,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(d)});
+async function act(fn,ok){
+  Swal.fire({title:'กำลังดำเนินการ...',background:'#0f172a',color:'#fff',allowOutsideClick:false,didOpen:()=>Swal.showLoading()});
+  try{
+    const r = await fn();
+    if(r&&r.status==='success'){ Swal.fire({icon:'success',title:ok||'สำเร็จ',text:r.message||'',background:'#0f172a',color:'#fff'}); sync(true); }
+    else Swal.fire({icon:'error',title:'ไม่สำเร็จ',text:(r&&r.message)||'',background:'#0f172a',color:'#fff'});
+    return r;
+  }catch(e){ Swal.fire({icon:'error',title:'เชื่อมต่อล้มเหลว',background:'#0f172a',color:'#fff'}); }
 }
 
-// ป้องกันการกดปุ่มซ้ำ
-function toggleBtnLock(btnId, isLocking, lockText = 'กำลังดำเนินการ...') {
-  const btn = $(btnId);
-  if (!btn) return;
-  btn.disabled = isLocking;
-  if (isLocking) {
-    btn.dataset.prevText = btn.innerText;
-    btn.innerText = lockText;
-    btn.classList.add('opacity-50', 'cursor-not-allowed');
-  } else {
-    btn.innerText = btn.dataset.prevText || 'ยืนยัน';
-    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+async function sync(force){
+  if(busy) return; busy=true; $('dot').className='w-2 h-2 rounded-full bg-amber-400 animate-pulse';
+  try{
+    if(!force){
+      const p = await rq(URL_+'?action=ping',{},10000);
+      if(p&&p.v===DB.v){ $('dot').className='w-2 h-2 rounded-full bg-emerald-500'; busy=false; return; }
+    }
+    const j = await rq(URL_+'?action=getAllData');
+    if(j&&j.status==='success'){ DB=j; try{localStorage.setItem('crru_db',JSON.stringify(DB));}catch(e){} draw(); $('dot').className='w-2 h-2 rounded-full bg-emerald-500'; }
+  }catch(e){ $('dot').className='w-2 h-2 rounded-full bg-rose-500'; }
+  finally{ busy=false; }
+}
+
+function draw(){ dNews(); dAlbums(); dVideos(); dMembers(); dJobs(); dCal(); dEquip(); }
+
+function nav(p){
+  document.querySelectorAll('.pg').forEach(e=>e.classList.add('hidden'));
+  const t=$('v-'+p); if(t) t.classList.remove('hidden');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const b=$('nav-'+p); if(b) b.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function ui(){
+  if(U){
+    $('guest').classList.add('hidden');
+    $('member').classList.remove('hidden'); $('member').classList.add('flex');
+    $('u-name').innerText='👤 '+U.fullname;
+    $('u-role').innerText=(U.position||'สมาชิก')+' ('+U.studentId+')';
+    ['nav-jobs','nav-calendar','mb-jobs','mb-cal'].forEach(i=>$(i).classList.remove('hidden'));
+    if(U.role==='admin'||U.role==='executive') $('lnk-admin').classList.remove('hidden');
+  }else{
+    $('guest').classList.remove('hidden'); $('member').classList.add('hidden');
+    ['nav-jobs','nav-calendar','mb-jobs','mb-cal','lnk-admin'].forEach(i=>$(i).classList.add('hidden'));
   }
 }
+function logout(){ localStorage.removeItem('crru_user'); U=null; ui(); nav('home');
+  Swal.fire({icon:'info',title:'ออกจากระบบแล้ว',timer:1100,showConfirmButton:false,background:'#0f172a',color:'#fff'}); }
 
-// โหลดข้อมูลทั้งหมด
-async function sync() {
-  try {
-    const res = await fetch(URL_ + '?action=getAllData');
-    DB = await res.json();
-    renderAll();
-  } catch (err) {
-    notify('ไม่สามารถเชื่อมต่อฐานข้อมูลได้', 'error');
-  }
+/* ---------- ข่าว ---------- */
+function dNews(){
+  $('c-news').innerHTML = DB.news.length ? DB.news.map(n=>`
+    <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="px-2.5 py-0.5 rounded-lg bg-blue-950 border border-blue-800 text-[10px] text-blue-400 font-bold">${esc(n.date)}</span>
+        <span class="text-[11px] text-slate-500">โดย: ${esc(n.author)}</span></div>
+      <h3 class="font-bold text-white text-base">${esc(n.title)}</h3>
+      <p class="text-xs text-slate-300 mt-2 leading-relaxed whitespace-pre-line">${esc(n.content)}</p>
+    </div>`).join('') : '<p class="text-xs text-slate-500 py-6">ยังไม่มีข่าวประชาสัมพันธ์</p>';
 }
 
-function renderAll() {
-  renderSchedule();
-  renderGallery();
-  renderEquipment();
-  renderMembers();
-  checkAuth();
+/* ---------- อัลบั้มภาพ ---------- */
+function dAlbums(){
+  $('c-albums').innerHTML = DB.albums.length ? DB.albums.map(a=>{
+    const n = DB.photos.filter(p=>p.albumId===a.id).length;
+    const cover = a.coverUrl || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
+    return `<div onclick="showAlbum('${a.id}')" class="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 cursor-pointer hover:border-blue-600 transition group">
+      <div class="relative"><img src="${cover}" loading="lazy" class="w-full aspect-[4/3] object-cover bg-slate-950 group-hover:opacity-80 transition">
+        <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-lg bg-black/70 text-[10px] text-white">🖼️ ${n} ภาพ</span></div>
+      <div class="p-3"><h3 class="font-bold text-white text-xs truncate">${esc(a.title)}</h3>
+        <p class="text-[11px] text-slate-500 mt-1">📸 ${esc(a.photographer)} · ${esc(a.date)}</p></div>
+    </div>`;
+  }).join('') : '<p class="text-xs text-slate-500 col-span-full">ยังไม่มีอัลบั้มผลงาน</p>';
 }
 
-// 1. เรนเดอร์ตารางงานชมรม
-function renderSchedule() {
-  if (!DB.schedules || DB.schedules.length === 0) {
-    $('c-schedule').innerHTML = '<div class="col-span-full text-xs text-slate-500 p-6 bg-slate-900 border border-slate-800 rounded-xl text-center">ยังไม่มีตารางงานหรือกิจกรรมในขณะนี้</div>';
-    return;
-  }
-  $('c-schedule').innerHTML = DB.schedules.map(job => {
-    const assigns = (DB.jobAssigns || []).filter(a => String(a.jobId) === String(job.id));
-    const photos = assigns.filter(a => a.type === 'photo' && a.status === 'อนุมัติแล้ว').map(a => a.fullname).join(', ') || 'ยังไม่ได้จัดทีม';
-    const videos = assigns.filter(a => a.type === 'video' && a.status === 'อนุมัติแล้ว').map(a => a.fullname).join(', ') || 'ยังไม่ได้จัดทีม';
+function showAlbum(id){
+  const a = DB.albums.find(x=>x.id===id); if(!a) return;
+  const ps = DB.photos.filter(p=>p.albumId===id);
+  $('ab-title').innerText = a.title;
+  $('ab-sub').innerText = '📸 '+a.photographer+' · '+a.date+' · '+ps.length+' ภาพ'+(a.description?(' · '+a.description):'');
+  $('ab-grid').innerHTML = ps.length ? ps.map(p=>`
+    <img src="${p.imageUrl}" loading="lazy" onclick="lightbox('${p.imageUrl}')"
+      class="w-full aspect-square object-cover rounded-xl bg-slate-950 cursor-zoom-in hover:ring-2 ring-blue-500">`).join('')
+    : '<p class="text-xs text-slate-500 col-span-full py-6 text-center">อัลบั้มนี้ยังไม่มีภาพ</p>';
+  open_('mAlbum');
+}
+function lightbox(u){ $('lb-img').src=u; open_('mLight'); }
 
-    return `
-      <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-3 flex flex-col justify-between">
-        <div>
-          <div class="flex justify-between items-start gap-2">
-            <h3 class="font-bold text-white text-base">${job.title}</h3>
-            <span class="text-[11px] bg-blue-950 text-blue-400 px-2.5 py-1 rounded-md border border-blue-800 whitespace-nowrap">${job.date || 'ไม่ระบุวัน'} ${job.time || ''}</span>
-          </div>
-          <div class="text-xs text-slate-400 mt-1">📍 <b>สถานที่:</b> ${job.location || 'ไม่ระบุสถานที่'}</div>
-          ${job.detail ? `<div class="text-xs text-slate-500 mt-1 line-clamp-2">${job.detail}</div>` : ''}
-        </div>
-        <div class="grid grid-cols-1 gap-1.5 pt-2 border-t border-slate-800 text-xs">
-          <div class="bg-black/40 p-2 rounded-lg border border-slate-800/80 flex items-center justify-between">
-            <span class="text-slate-400">📷 <b>ช่างภาพ:</b></span>
-            <span class="${photos === 'ยังไม่ได้จัดทีม' ? 'text-amber-400 font-medium' : 'text-emerald-400 font-medium'}">${photos}</span>
-          </div>
-          <div class="bg-black/40 p-2 rounded-lg border border-slate-800/80 flex items-center justify-between">
-            <span class="text-slate-400">🎥 <b>ช่างวิดีโอ:</b></span>
-            <span class="${videos === 'ยังไม่ได้จัดทีม' ? 'text-amber-400 font-medium' : 'text-emerald-400 font-medium'}">${videos}</span>
-          </div>
-        </div>
-      </div>
-    `;
+/* ---------- วิดีโอ / สมาชิก ---------- */
+function dVideos(){
+  $('c-videos').innerHTML = DB.videos.length ? DB.videos.map(v=>{
+    const u = String(v.youtubeUrl).replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');
+    return `<div class="bg-slate-900 rounded-2xl p-4 border border-slate-800">
+      <div class="aspect-video w-full rounded-xl overflow-hidden bg-black mb-3"><iframe src="${u}" loading="lazy" class="w-full h-full" frameborder="0" allowfullscreen></iframe></div>
+      <h3 class="font-bold text-white text-sm">${esc(v.title)}</h3>
+      <p class="text-xs text-rose-400 mt-1">🎬 ${esc(v.creator)}</p></div>`;
+  }).join('') : '<p class="text-xs text-slate-500">ยังไม่มีวิดีโอ</p>';
+}
+
+function dMembers(){
+  $('c-members').innerHTML = DB.members.length ? DB.members.map(m=>`
+    <div class="bg-slate-900/70 border border-slate-800 p-4 rounded-2xl text-center">
+      <div class="w-12 h-12 bg-blue-950 text-blue-400 font-bold rounded-full flex items-center justify-center mx-auto mb-2">${esc(String(m.fullname).charAt(0))}</div>
+      <p class="font-semibold text-white text-xs truncate">${esc(m.fullname)}</p>
+      <p class="text-[11px] text-blue-400 mt-0.5">${esc(m.position)}</p>
+      <span class="inline-block mt-2 px-2 py-0.5 bg-slate-950 rounded text-[10px] text-slate-400">
+        ${m.skillType==='photo'?'📸 ช่างภาพ':(m.skillType==='video'?'🎬 ช่างวิดีโอ':'📸🎬 ทั้งสองสาย')}</span>
+    </div>`).join('') : '<p class="text-xs text-slate-500 col-span-full">ยังไม่มีสมาชิก</p>';
+}
+
+/* ---------- ตารางงาน ---------- */
+function dJobs(){
+  const c = $('c-jobs'); if(!c) return;
+  if(!DB.schedules.length){ c.innerHTML='<p class="text-xs text-slate-500 py-6">ยังไม่มีตารางงาน</p>'; return; }
+  c.innerHTML = DB.schedules.map(j=>{
+    const pN=parseInt(j.photoNeed)||0, vN=parseInt(j.videoNeed)||0;
+    const as = DB.jobAssigns.filter(a=>a.jobId===j.id);
+    const pick=(t,s)=>as.filter(a=>a.type===t&&a.status===s);
+    const pOk=pick('photo','อนุมัติแล้ว'), pWait=pick('photo','รออนุมัติ');
+    const vOk=pick('video','อนุมัติแล้ว'), vWait=pick('video','รออนุมัติ');
+    const done = j.status==='completed';
+    const fill = pOk.length+vOk.length, need = pN+vN;
+
+    let bd='border-emerald-500/70', bg='<span class="px-2.5 py-0.5 rounded-full text-[10px] bg-emerald-950 border border-emerald-700 text-emerald-400 font-bold">● ยังว่าง</span>';
+    if(done){ bd='border-slate-700 opacity-70'; bg='<span class="px-2.5 py-0.5 rounded-full text-[10px] bg-slate-800 text-slate-400 font-bold">● จบงานแล้ว</span>'; }
+    else if(need>0&&fill>=need){ bd='border-rose-500/70'; bg='<span class="px-2.5 py-0.5 rounded-full text-[10px] bg-rose-950 border border-rose-700 text-rose-400 font-bold">● ทีมงานครบแล้ว</span>'; }
+    else if(fill>0){ bd='border-amber-500/70'; bg=`<span class="px-2.5 py-0.5 rounded-full text-[10px] bg-amber-950 border border-amber-700 text-amber-400 font-bold">● ยืนยันแล้ว ${fill}/${need}</span>`; }
+
+    const mine = a => U && String(a.studentId)===String(U.studentId);
+    const slot = (label,color,type,need,ok,wait)=>{
+      const myReq = as.find(a=>a.type===type && mine(a));
+      const canJoin = U && !done && !myReq && ok.length<need &&
+        (U.skillType===type || U.skillType==='all' || U.role==='admin' || U.role==='executive');
+      let btn='';
+      if(canJoin) btn=`<button onclick="joinJob('${j.id}','${type}')" class="px-2.5 py-1 bg-${color}-600 hover:bg-${color}-500 text-white rounded-lg text-[11px] font-semibold">✋ กดรับงาน</button>`;
+      else if(myReq && !done) btn=`<button onclick="leaveJob('${j.id}','${type}')" class="px-2.5 py-1 bg-slate-800 text-rose-300 rounded-lg text-[11px]">ยกเลิกคำขอ</button>`;
+      const okList = ok.length? ok.map(a=>`<span class="inline-block px-2 py-0.5 rounded-md bg-emerald-950 border border-emerald-800 text-emerald-300 text-[10px] mr-1 mb-1">✔ ${esc(a.fullname)}</span>`).join('') : '<span class="text-[11px] text-slate-500">ยังไม่มีผู้ได้รับอนุมัติ</span>';
+      const waitList = wait.length? '<div class="mt-1.5">'+wait.map(a=>`<span class="inline-block px-2 py-0.5 rounded-md bg-amber-950 border border-amber-800 text-amber-300 text-[10px] mr-1 mb-1">⏳ ${esc(a.fullname)} (รออนุมัติ)</span>`).join('')+'</div>' : '';
+      return `<div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs font-bold text-${color}-400">${label} (${ok.length}/${need})</span>${btn}</div>
+        <div>${okList}${waitList}</div></div>`;
+    };
+
+    return `<div class="p-5 bg-slate-900 rounded-2xl border-2 ${bd}">
+      <div class="flex flex-wrap justify-between items-start gap-2">
+        <div class="text-xs">
+          <span class="px-2.5 py-0.5 rounded-lg bg-slate-950 border border-slate-800 text-[11px] font-semibold text-blue-400">📅 ${esc(j.date)}${j.timeRange?(' · '+esc(j.timeRange)):''}</span>
+          <span class="text-slate-400 ml-2">📍 ${esc(j.location)}</span></div>
+        <div>${bg}</div></div>
+      <h3 class="font-bold text-white text-base mt-2">${esc(j.title)}</h3>
+      ${j.detail?`<p class="text-xs text-slate-400 mt-1">${esc(j.detail)}</p>`:''}
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 pt-4 border-t border-slate-800/80">
+        ${slot('📸 ช่างภาพ','blue','photo',pN,pOk,pWait)}
+        ${slot('🎬 ช่างวิดีโอ','rose','video',vN,vOk,vWait)}
+      </div></div>`;
   }).join('');
 }
 
-// 2. เรนเดอร์ผลงานภาพและวิดีโอ
-function renderGallery() {
-  if (!DB.albums || DB.albums.length === 0) {
-    $('c-albums').innerHTML = '<div class="col-span-full text-xs text-slate-500 p-6 bg-slate-900 border border-slate-800 rounded-xl text-center">ยังไม่มีการเผยแพร่ผลงาน</div>';
-    return;
+const joinJob = (jobId,type)=> act(()=>post({action:'requestJob',jobId,type,studentId:U.studentId,fullname:U.fullname}),'ส่งคำขอรับงานแล้ว');
+const leaveJob = (jobId,type)=> confirm('ยกเลิกคำขอรับงานนี้?') && act(()=>post({action:'cancelJobRequest',jobId,type,studentId:U.studentId}),'ยกเลิกแล้ว');
+
+/* ---------- ปฏิทินจองอุปกรณ์ ---------- */
+function mv(o){ cal.setMonth(cal.getMonth()+o); dCal(); }
+const bkColor = s => s==='อนุมัติแล้ว'?'bg-blue-950 text-blue-300 border-blue-800'
+  : s==='กำลังใช้งาน'?'bg-purple-950 text-purple-300 border-purple-800'
+  : s==='คืนแล้ว'?'bg-emerald-950 text-emerald-300 border-emerald-800'
+  : s==='ยกเลิก'?'bg-rose-950 text-rose-300 border-rose-800'
+  : 'bg-amber-950 text-amber-300 border-amber-800';
+
+function dCal(){
+  const g=$('cal-g'); if(!g) return;
+  const y=cal.getFullYear(), m=cal.getMonth();
+  const nm=["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+  $('cal-t').innerText = nm[m]+' '+(y+543);
+  const first=new Date(y,m,1).getDay(), tot=new Date(y,m+1,0).getDate();
+  const td=new Date(), tds=`${td.getFullYear()}-${String(td.getMonth()+1).padStart(2,'0')}-${String(td.getDate()).padStart(2,'0')}`;
+  let h='';
+  for(let i=0;i<first;i++) h+='<div class="bg-slate-950/40 min-h-[95px]"></div>';
+  for(let d=1;d<=tot;d++){
+    const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const bs=DB.bookings.filter(b=>ds>=b.startDate&&ds<=b.endDate&&b.status!=='ยกเลิก');
+    const bd=bs.slice(0,3).map(b=>`<div class="px-1.5 py-0.5 rounded border text-[9px] truncate ${bkColor(b.status)}">${esc(b.equipName)}</div>`).join('');
+    const more = bs.length>3 ? `<div class="text-[9px] text-slate-500">+${bs.length-3} รายการ</div>` : '';
+    h+=`<div onclick="openDay('${ds}')" class="bg-slate-900 ${ds===tds?'ring-1 ring-blue-500 ring-inset':''} min-h-[95px] p-1.5 hover:bg-slate-800 cursor-pointer">
+      <span class="text-xs font-semibold text-slate-300 block mb-1">${d}</span><div class="space-y-1">${bd}${more}</div></div>`;
   }
-  $('c-albums').innerHTML = DB.albums.map(item => `
-    <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex flex-col group hover:border-slate-700 transition">
-      <div class="h-40 bg-black/50 flex items-center justify-center overflow-hidden relative">
-        ${item.type === 'video' ? 
-          `<a href="${item.url}" target="_blank" class="text-red-400 text-xs flex flex-col items-center gap-2 p-4 text-center hover:scale-105 transition">
-             <span class="text-3xl">▶️</span>
-             <span class="underline">เปิดชมวิดีโอ</span>
-           </a>` : 
-          `<img src="${item.url}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/400x300/1e293b/94a3b8?text=Image+Unavailable'">`
-        }
-        <span class="absolute top-2 right-2 px-2 py-0.5 rounded text-[10px] font-semibold ${item.type === 'video' ? 'bg-red-600 text-white' : 'bg-emerald-600 text-white'}">
-          ${item.type === 'video' ? 'VIDEO' : 'PHOTO'}
-        </span>
-      </div>
-      <div class="p-3 flex-1 flex flex-col justify-between space-y-1">
-        <div class="font-semibold text-xs text-white line-clamp-1">${item.title}</div>
-        <div class="text-[10px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-800/60">
-          <span>👤 ${item.author || 'สมาชิกชมรม'}</span>
-          <span>${item.date ? item.date.split('T')[0] : ''}</span>
-        </div>
-      </div>
-    </div>
-  `).join('');
+  g.innerHTML=h;
 }
 
-// 3. เรนเดอร์รายการการจองอุปกรณ์
-function renderEquipment() {
-  if (!DB.equipmentBookings || DB.equipmentBookings.length === 0) {
-    $('c-equipment').innerHTML = '<div class="text-xs text-slate-500 p-6 bg-slate-900 border border-slate-800 rounded-xl text-center">ไม่มีข้อมูลประวัติการจองอุปกรณ์ในขณะนี้</div>';
-    return;
-  }
-  $('c-equipment').innerHTML = DB.equipmentBookings.map(b => `
-    <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <div class="space-y-1">
-        <div class="font-bold text-white text-sm flex items-center gap-2">
-          <span>📦 ${b.equipName}</span>
-        </div>
-        <div class="text-xs text-slate-400">ผู้จอง: <span class="text-blue-400 font-medium">${b.fullname}</span> | ระยะเวลา: <b>${b.startDate}</b> ถึง <b>${b.endDate}</b></div>
-        <div class="text-[11px] text-slate-500">จุดประสงค์: ${b.reason}</div>
+function openDay(ds){
+  const bs = DB.bookings.filter(b=>ds>=b.startDate&&ds<=b.endDate);
+  $('dy-title').innerText='📅 วันที่ '+ds;
+  $('dy-list').innerHTML = bs.length ? bs.map(b=>`
+    <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs space-y-1">
+      <div class="flex justify-between gap-2"><span class="font-bold text-white text-sm">${esc(b.equipName)}</span>
+        <span class="px-2 py-0.5 rounded border text-[10px] ${bkColor(b.status)}">${esc(b.status)}</span></div>
+      <p class="text-slate-400">👤 ${esc(b.userName)} (${esc(b.studentId)})</p>
+      <p class="text-slate-400">📝 ${esc(b.purpose)}</p>
+      <p class="text-slate-400">⏱ ${esc(b.startDate)} ถึง ${esc(b.endDate)}</p></div>`).join('')
+    : '<p class="text-xs text-slate-500 text-center py-3">ยังไม่มีการจองในวันนี้</p>';
+
+  const f = $('dy-form');
+  if(!U){ f.innerHTML='<p class="text-xs text-amber-400 text-center">กรุณาเข้าสู่ระบบเพื่อจองอุปกรณ์</p>'; open_('mDay'); return; }
+  const avail = DB.equipments.filter(e=>e.status==='พร้อมใช้งาน');
+  const busyIds = DB.bookings.filter(b=>ds>=b.startDate&&ds<=b.endDate&&b.status!=='ยกเลิก'&&b.status!=='คืนแล้ว').map(b=>String(b.equipId));
+  const opts = avail.map(e=>{
+    const taken = busyIds.indexOf(String(e.id))>-1;
+    return `<option value="${e.id}" ${taken?'disabled':''}>${esc(e.name)} (${esc(e.category)})${taken?' — ถูกจองแล้ว':''}</option>`;
+  }).join('');
+  f.innerHTML = `
+    <p class="text-xs font-bold text-white mb-2">📷 จองอุปกรณ์สำหรับวันที่ ${ds}</p>
+    ${avail.length? `<form onsubmit="submitBook(event,'${ds}')" class="space-y-2.5 text-xs">
+      <select id="dy-eq" required class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white">${opts}</select>
+      <div class="grid grid-cols-2 gap-2">
+        <div><label class="text-slate-400 text-[11px]">วันที่เริ่ม</label>
+          <input type="date" id="dy-s" value="${ds}" required class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white"></div>
+        <div><label class="text-slate-400 text-[11px]">ถึงวันที่</label>
+          <input type="date" id="dy-e" value="${ds}" required class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white"></div>
       </div>
-      <div>
-        <span class="px-3 py-1 rounded-full text-xs font-semibold ${
-          b.status === 'อนุมัติแล้ว' 
-            ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' 
-            : (b.status === 'ไม่อนุมัติ' ? 'bg-red-950 text-red-400 border border-red-800' : 'bg-amber-950 text-amber-400 border border-amber-800')
-        }">
-          ● ${b.status || 'รออนุมัติ'}
-        </span>
-      </div>
-    </div>
-  `).join('');
+      <input id="dy-p" required placeholder="งานที่นำไปใช้ เช่น ถ่ายงานกีฬา" class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white">
+      <button class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-white font-semibold">ยืนยันการจอง</button>
+    </form>` : '<p class="text-xs text-rose-400">ไม่มีอุปกรณ์สถานะ "พร้อมใช้งาน" ให้จองในขณะนี้</p>'}`;
+  open_('mDay');
 }
 
-// 4. เรนเดอร์สมาชิกสำหรับทีมบริหาร/แอดมิน
-function renderMembers() {
-  const user = JSON.parse(localStorage.getItem('crru_user') || '{}');
-  if (!['แอดมิน', 'ทีมบริหาร'].includes(user.role)) return;
-
-  if (!DB.users || DB.users.length === 0) {
-    $('c-members').innerHTML = '<div class="col-span-full text-xs text-slate-500 p-6 bg-slate-900 border border-slate-800 rounded-xl text-center">ไม่พบข้อมูลสมาชิก</div>';
-    return;
-  }
-
-  $('c-members').innerHTML = DB.users.map(u => `
-    <div class="p-3.5 bg-slate-900 border border-slate-800 rounded-xl flex justify-between items-center text-xs">
-      <div>
-        <div class="font-bold text-white text-sm">${u.fullname} <span class="text-[10px] text-blue-400 font-normal">(@${u.username})</span></div>
-        <div class="text-slate-400 mt-0.5">สถานะ: <span class="text-slate-300 font-medium">${u.role}</span> | โทร: ${u.phone || '-'}</div>
-      </div>
-      <button onclick="openEditMemberModal('${u.id}', '${u.fullname}', '${u.role}', '${u.phone || ''}')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-blue-400 font-medium transition">✏️ แก้ไข</button>
-    </div>
-  `).join('');
+async function submitBook(ev,ds){
+  ev.preventDefault();
+  const id=$('dy-eq').value, s=$('dy-s').value, e=$('dy-e').value, p=$('dy-p').value;
+  close_('mDay');
+  await act(()=>post({action:'bookEquipment',equipId:id,studentId:U.studentId,userName:U.fullname,startDate:s,endDate:e,purpose:p}),'ส่งคำขอจองสำเร็จ');
 }
 
-// อัปโหลดไฟล์รูป / ลิงก์วิดีโอ
-function openMediaModal(type) {
-  const user = JSON.parse(localStorage.getItem('crru_user') || 'null');
-  if (!user) {
-    notify('กรุณาเข้าสู่ระบบก่อนทำการอัปโหลด', 'error');
-    openModal('mLogin');
-    return;
-  }
-  $('media-type').value = type;
-  $('mMediaTitle').innerText = type === 'photo' ? '📷 อัปโหลดรูปภาพ' : '🎥 อัปโหลดวิดีโอ';
-  if (type === 'photo') {
-    $('media-photo-input').classList.remove('hidden');
-    $('media-video-input').classList.add('hidden');
-    $('media-file').required = true;
-    $('media-url').required = false;
-  } else {
-    $('media-photo-input').classList.add('hidden');
-    $('media-video-input').classList.remove('hidden');
-    $('media-file').required = false;
-    $('media-url').required = true;
-  }
-  openModal('mMedia');
+function dEquip(){
+  $('tb-eq').innerHTML = DB.equipments.length ? DB.equipments.map(e=>{
+    const ok = e.status==='พร้อมใช้งาน';
+    return `<tr class="hover:bg-slate-950/40">
+      <td class="p-2.5 font-mono text-slate-400">${esc(e.id)}</td>
+      <td class="p-2.5 font-semibold text-white">${esc(e.name)}</td>
+      <td class="p-2.5 text-slate-300">${esc(e.category)}</td>
+      <td class="p-2.5"><span class="px-2 py-0.5 rounded text-[10px] ${ok?'bg-emerald-950 text-emerald-400':'bg-rose-950 text-rose-400'}">${esc(e.status)}</span>
+        ${ok?'':'<span class="block text-[9px] text-rose-500 mt-0.5">จองไม่ได้</span>'}</td>
+      <td class="p-2.5 text-slate-400">${esc(e.note||'-')}</td></tr>`;
+  }).join('') : '<tr><td colspan="5" class="p-4 text-center text-slate-500">ยังไม่มีอุปกรณ์ในคลัง</td></tr>';
 }
+function openEquip(){ dEquip(); open_('mEquip'); }
 
-async function submitMedia(e) {
+/* ---------- ฟอร์ม ---------- */
+$('fLogin').addEventListener('submit', async e=>{
   e.preventDefault();
-  const user = JSON.parse(localStorage.getItem('crru_user') || '{}');
-  if (!user.fullname) { notify('กรุณาเข้าสู่ระบบก่อน', 'error'); return; }
-
-  toggleBtnLock('btnSubmitMedia', true);
-  const type = $('media-type').value;
-  const payload = {
-    action: 'uploadMedia',
-    type: type,
-    title: $('media-title').value,
-    author: user.fullname
-  };
-
-  try {
-    if (type === 'photo') {
-      const file = $('media-file').files[0];
-      if (!file) throw new Error('กรุณาเลือกไฟล์รูปภาพ');
-      payload.mimeType = file.type;
-      payload.base64 = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    } else {
-      payload.mediaUrl = $('media-url').value;
-    }
-
-    const res = await fetch(URL_, { method: 'POST', body: JSON.stringify(payload) });
-    const result = await res.json();
-    if (result.success) {
-      notify('บันทึกผลงานเรียบร้อยแล้ว');
-      closeModal('mMedia');
-      $('fMedia').reset();
-      sync();
-    } else {
-      notify(result.message, 'error');
-    }
-  } catch (err) {
-    notify(err.message, 'error');
-  } finally {
-    toggleBtnLock('btnSubmitMedia', false);
-  }
-}
-
-// ส่งคำขอจองอุปกรณ์
-async function submitBookEquipment(e) {
+  const r = await act(()=>post({action:'login',studentId:$('lg-sid').value.trim(),password:$('lg-pass').value.trim()}),'เข้าสู่ระบบสำเร็จ');
+  if(r&&r.status==='success'){ U=r.user; localStorage.setItem('crru_user',JSON.stringify(U)); close_('mLogin'); ui(); dJobs(); nav('jobs'); }
+});
+$('fReg').addEventListener('submit', async e=>{
   e.preventDefault();
-  const user = JSON.parse(localStorage.getItem('crru_user') || '{}');
-  if (!user.fullname) {
-    notify('กรุณาเข้าสู่ระบบก่อนทำการจองอุปกรณ์', 'error');
-    openModal('mLogin');
-    return;
-  }
-
-  toggleBtnLock('btnSubmitEquip', true);
-  const payload = {
-    action: 'bookEquipment',
-    equipName: $('equip-name').value,
-    startDate: $('equip-start').value,
-    endDate: $('equip-end').value,
-    reason: $('equip-reason').value,
-    fullname: user.fullname
-  };
-
-  try {
-    const res = await fetch(URL_, { method: 'POST', body: JSON.stringify(payload) });
-    const result = await res.json();
-    if (result.success) {
-      notify('ส่งคำขอจองอุปกรณ์เรียบร้อยแล้ว');
-      closeModal('mBookEquip');
-      $('fBookEquip').reset();
-      sync();
-    } else {
-      notify(result.message, 'error');
-    }
-  } catch (err) {
-    notify('เกิดข้อผิดพลาดในการส่งข้อมูล', 'error');
-  } finally {
-    toggleBtnLock('btnSubmitEquip', false);
-  }
-}
-
-// แก้ไขข้อมูลสมาชิก
-function openEditMemberModal(id, name, role, phone) {
-  $('edit-user-id').value = id;
-  $('edit-user-name').value = name;
-  $('edit-user-role').value = role;
-  $('edit-user-phone').value = phone || '';
-  openModal('mEditMember');
-}
-
-async function submitEditMember(e) {
+  const r = await act(()=>post({action:'register',fullname:$('rg-name').value,studentId:$('rg-sid').value.trim(),
+    password:$('rg-pass').value.trim(),faculty:$('rg-fac').value,phone:$('rg-phone').value,skillType:$('rg-skill').value}),'ส่งใบสมัครสำเร็จ');
+  if(r&&r.status==='success'){ $('fReg').reset(); nav('home'); }
+});
+$('fForgot').addEventListener('submit', async e=>{
   e.preventDefault();
-  toggleBtnLock('btnSubmitMember', true);
-  const payload = {
-    action: 'updateMember',
-    userId: $('edit-user-id').value,
-    fullname: $('edit-user-name').value,
-    role: $('edit-user-role').value,
-    phone: $('edit-user-phone').value
-  };
+  const r = await post({action:'forgotPassword',studentId:$('fg-sid').value.trim()});
+  close_('mForgot');
+  Swal.fire({icon:r.status==='success'?'info':'error',title:r.status==='success'?'ข้อมูลบัญชี':'ไม่พบข้อมูล',text:r.message,background:'#0f172a',color:'#fff'});
+});
 
-  try {
-    const res = await fetch(URL_, { method: 'POST', body: JSON.stringify(payload) });
-    const result = await res.json();
-    if (result.success) {
-      notify('บันทึกการแก้ไขข้อมูลสำเร็จ');
-      closeModal('mEditMember');
-      sync();
-    } else {
-      notify(result.message, 'error');
-    }
-  } catch (err) {
-    notify('เกิดข้อผิดพลาดในการบันทึก', 'error');
-  } finally {
-    toggleBtnLock('btnSubmitMember', false);
-  }
-}
-
-// ระบบเข้าสู่ระบบ
-async function submitLogin(e) {
-  e.preventDefault();
-  toggleBtnLock('btnSubmitLogin', true);
-  const payload = {
-    action: 'login',
-    username: $('login-username').value.trim(),
-    password: $('login-password').value.trim()
-  };
-
-  try {
-    const res = await fetch(URL_, { method: 'POST', body: JSON.stringify(payload) });
-    const result = await res.json();
-    if (result.success) {
-      localStorage.setItem('crru_user', JSON.stringify(result.user));
-      notify(`ยินดีต้อนรับคุณ ${result.user.fullname}`);
-      closeModal('mLogin');
-      $('login-username').value = '';
-      $('login-password').value = '';
-      renderAll();
-    } else {
-      notify(result.message, 'error');
-    }
-  } catch (err) {
-    notify('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์', 'error');
-  } finally {
-    toggleBtnLock('btnSubmitLogin', false);
-  }
-}
-
-function logout() {
-  localStorage.removeItem('crru_user');
-  notify('ออกจากระบบเรียบร้อยแล้ว');
-  renderAll();
-}
-
-function checkAuth() {
-  const user = JSON.parse(localStorage.getItem('crru_user') || 'null');
-  if (user) {
-    $('u-area').innerHTML = `
-      <div class="flex items-center gap-2">
-        <span class="text-xs text-slate-300 hidden sm:inline">👋 <b>${user.fullname}</b> <span class="text-[10px] text-blue-400">(${user.role})</span></span>
-        <button onclick="logout()" class="text-[11px] px-2.5 py-1 bg-red-950/60 hover:bg-red-900/80 text-red-300 border border-red-800/80 rounded-lg transition">ออกจากระบบ</button>
-      </div>
-    `;
-    $('media-btns').classList.remove('hidden');
-    if (['แอดมิน', 'ทีมบริหาร'].includes(user.role)) {
-      $('nav-members').classList.remove('hidden');
-    } else {
-      $('nav-members').classList.add('hidden');
-    }
-  } else {
-    $('u-area').innerHTML = `<button onclick="openModal('mLogin')" class="text-xs px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg font-medium transition">เข้าสู่ระบบ</button>`;
-    $('media-btns').classList.add('hidden');
-    $('nav-members').classList.add('hidden');
-  }
-}
-
-// Navigation & Modals UI Control
-function nav(page) {
-  document.querySelectorAll('.pg').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-  const targetPage = $('v-' + page);
-  if (targetPage) targetPage.classList.add('active');
-  const activeBtn = $('nav-' + page);
-  if (activeBtn) activeBtn.classList.add('active');
-}
-
-function openModal(id) { $(id).classList.remove('hidden'); }
-function closeModal(id) { $(id).classList.add('hidden'); }
-
-// รันครั้งแรกเมื่อเปิดหน้าเว็บ
-sync();
+ui(); draw(); nav('home'); sync(true);
+setInterval(()=>{ if(!document.hidden) sync(false); },10000);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) sync(false); });
 </script>
 </body>
 </html>
