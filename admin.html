@@ -3,98 +3,203 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ระบบผู้ดูแล | CRRU Photo Club Admin</title>
+  <title>ระบบจัดการหลังบ้าน | CRRU Photo Club Admin</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f59e0b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/></svg>">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>body { font-family: 'Prompt', sans-serif; }</style>
 </head>
-<body class="bg-[#090d16] text-slate-100 min-h-screen flex flex-col selection:bg-amber-600">
+<body class="bg-[#090d16] text-slate-100 min-h-screen flex flex-col selection:bg-amber-600 selection:text-white">
 
-  <!-- Admin Top Bar -->
-  <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-30">
+  <!-- Header -->
+  <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center gap-3">
-        <a href="index.html" class="p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-400 hover:text-white text-xs flex items-center gap-1">
-          <i data-lucide="arrow-left" class="w-4 h-4"></i> กลับหน้าหลัก
+        <a href="index.html" class="p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-400 hover:text-white text-xs flex items-center gap-1.5 transition">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> กลับหน้าเว็บ
         </a>
-        <h1 class="text-base sm:text-lg font-bold text-amber-400 flex items-center gap-2">
-          <i data-lucide="shield" class="w-5 h-5"></i> แผงจัดการผู้ดูแลระบบ (Admin Panel)
-        </h1>
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+            <i data-lucide="shield" class="w-4 h-4"></i>
+          </div>
+          <h1 class="text-base sm:text-lg font-bold text-amber-400">ระบบจัดการชมรม (Admin Control Panel)</h1>
+        </div>
       </div>
-      <div id="admin-user-tag" class="text-xs text-slate-400"></div>
+      <div id="admin-user-tag" class="text-xs text-slate-400 hidden sm:block"></div>
     </div>
   </header>
 
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-8">
 
-    <!-- บัตรสรุปสถานะระบบ -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl flex items-center gap-4">
-        <div class="p-3 bg-amber-950/80 text-amber-400 rounded-xl"><i data-lucide="user-check" class="w-6 h-6"></i></div>
-        <div>
-          <p class="text-xs text-slate-400">สมาชิกที่รออนุมัติ</p>
-          <p id="stat-pending" class="text-2xl font-bold text-white">0</p>
-        </div>
+    <!-- แผงการจัดการด่วน (Action Bar) -->
+    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+      <button onclick="openModal('addNewsModal')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-blue-900/60 rounded-2xl text-left transition">
+        <p class="font-bold text-blue-400 text-sm">📢 โพสต์ข่าวใหม่</p>
+        <p class="text-[10px] text-slate-400 mt-1">ประชาสัมพันธ์หน้าเว็บ</p>
+      </button>
+      <button onclick="openModal('addJobModal')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-amber-900/60 rounded-2xl text-left transition">
+        <p class="font-bold text-amber-400 text-sm">📅 เปิดงานใหม่</p>
+        <p class="text-[10px] text-slate-400 mt-1">กำหนดโควตาช่างภาพ</p>
+      </button>
+      <button onclick="openModal('addEquipModal')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-emerald-900/60 rounded-2xl text-left transition">
+        <p class="font-bold text-emerald-400 text-sm">📦 เพิ่มอุปกรณ์</p>
+        <p class="text-[10px] text-slate-400 mt-1">บันทึกของเข้าคลัง</p>
+      </button>
+      <button onclick="openModal('uploadDriveModal')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-2xl text-left transition">
+        <p class="font-bold text-white text-sm">📸 ลงรูปแกลเลอรี</p>
+        <p class="text-[10px] text-slate-400 mt-1">อัปโหลดลง Drive</p>
+      </button>
+      <button onclick="openModal('addVideoModal')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-2xl text-left transition">
+        <p class="font-bold text-rose-400 text-sm">🎬 ลงวิดีโอ</p>
+        <p class="text-[10px] text-slate-400 mt-1">เพิ่มลิงก์ YouTube</p>
+      </button>
+    </div>
+
+    <!-- 1. รายชื่อรออนุมัติสมาชิก -->
+    <div class="space-y-3">
+      <div class="flex justify-between items-center">
+        <h2 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="user-check" class="w-5 h-5 text-amber-400"></i> อนุมัติสมาชิกและกำหนดบทบาท
+        </h2>
+        <span id="badge-pending" class="px-2.5 py-0.5 rounded-full text-[10px] bg-amber-950 text-amber-400 border border-amber-800">รออนุมัติ 0 คน</span>
       </div>
-      <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl flex items-center gap-4">
-        <div class="p-3 bg-blue-950/80 text-blue-400 rounded-xl"><i data-lucide="users" class="w-6 h-6"></i></div>
-        <div>
-          <p class="text-xs text-slate-400">สมาชิกทั้งหมดที่ใช้งานอยู่</p>
-          <p id="stat-active" class="text-2xl font-bold text-white">0</p>
-        </div>
-      </div>
-      <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl flex items-center gap-4">
-        <div class="p-3 bg-emerald-950/80 text-emerald-400 rounded-xl"><i data-lucide="camera" class="w-6 h-6"></i></div>
-        <div>
-          <p class="text-xs text-slate-400">อุปกรณ์ทั้งหมดในคลัง</p>
-          <p id="stat-equip" class="text-2xl font-bold text-white">0</p>
-        </div>
+      <div class="overflow-x-auto bg-slate-900 rounded-2xl border border-slate-800 shadow-xl">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-950 text-slate-400 uppercase text-[10px]">
+            <tr>
+              <th class="p-3.5">ชื่อ-สกุล</th>
+              <th class="p-3.5">รหัสนักศึกษา</th>
+              <th class="p-3.5">คณะ</th>
+              <th class="p-3.5">เบอร์โทร</th>
+              <th class="p-3.5">กำหนดบทบาทและตำแหน่ง</th>
+              <th class="p-3.5 text-center">การจัดการ</th>
+            </tr>
+          </thead>
+          <tbody id="admin-members-tbody" class="divide-y divide-slate-800"></tbody>
+        </table>
       </div>
     </div>
 
-    <!-- ตารางอนุมัติสมาชิก -->
-    <div class="space-y-4">
-      <div class="flex justify-between items-center">
-        <h2 class="text-lg font-bold text-white flex items-center gap-2">
-          <i data-lucide="user-plus" class="w-5 h-5 text-blue-400"></i> จัดการและอนุมัติสมาชิกใหม่
-        </h2>
-        <button onclick="loadAdminMembers()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs flex items-center gap-1">
-          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> รีเฟรช
-        </button>
-      </div>
-
+    <!-- 2. จัดการคำขอจองอุปกรณ์ -->
+    <div class="space-y-3">
+      <h2 class="text-base font-bold text-white flex items-center gap-2">
+        <i data-lucide="calendar" class="w-5 h-5 text-blue-400"></i> จัดการสถานะการจองอุปกรณ์
+      </h2>
       <div class="overflow-x-auto bg-slate-900 rounded-2xl border border-slate-800 shadow-xl">
         <table class="w-full text-left text-xs text-slate-300">
-          <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 uppercase text-[11px]">
+          <thead class="bg-slate-950 text-slate-400 uppercase text-[10px]">
             <tr>
-              <th class="p-4">ชื่อ-สกุล</th>
-              <th class="p-4">รหัสนักศึกษา</th>
-              <th class="p-4">คณะ/สำนัก</th>
-              <th class="p-4">เบอร์โทร</th>
-              <th class="p-4">กำหนดบทบาทและตำแหน่ง</th>
-              <th class="p-4 text-center">การจัดการ</th>
+              <th class="p-3.5">อุปกรณ์</th>
+              <th class="p-3.5">ผู้จอง</th>
+              <th class="p-3.5">วันที่ใช้</th>
+              <th class="p-3.5">วัตถุประสงค์</th>
+              <th class="p-3.5">สถานะปัจจุบัน</th>
+              <th class="p-3.5 text-center">ปรับสถานะ</th>
             </tr>
           </thead>
-          <tbody id="member-approval-tbody" class="divide-y divide-slate-800"></tbody>
+          <tbody id="admin-bookings-tbody" class="divide-y divide-slate-800"></tbody>
         </table>
       </div>
     </div>
 
   </main>
 
+  <!-- ================= ADMIN MODALS ================= -->
+  <!-- Add News -->
+  <div id="addNewsModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 max-w-md w-full p-6 rounded-2xl space-y-3">
+      <h3 class="font-bold text-white">📢 โพสต์ข่าวประชาสัมพันธ์</h3>
+      <form id="addNewsForm" class="space-y-2.5 text-xs">
+        <input type="text" id="news-date" required placeholder="วันที่ เช่น 1 ก.ย. 2026" class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        <input type="text" id="news-title" required placeholder="หัวข้อข่าว" class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        <textarea id="news-content" required rows="4" placeholder="เนื้อหาข่าว..." class="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white"></textarea>
+        <button type="submit" class="w-full py-2 bg-blue-600 rounded-lg text-white font-semibold">โพสต์ข่าว</button>
+      </form>
+      <button onclick="closeModal('addNewsModal')" class="w-full py-1.5 bg-slate-800 text-slate-400 rounded-lg text-xs">ยกเลิก</button>
+    </div>
+  </div>
+
+  <!-- Add Job -->
+  <div id="addJobModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 max-w-md w-full p-6 rounded-2xl space-y-3">
+      <h3 class="font-bold text-white">📅 เปิดงานใหม่</h3>
+      <form id="addJobForm" class="space-y-2.5 text-xs">
+        <input type="date" id="j-date" required class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        <input type="text" id="j-title" required placeholder="ชื่องาน / กิจกรรม" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        <input type="text" id="j-location" required placeholder="สถานที่จัดงาน" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        <textarea id="j-detail" placeholder="รายละเอียดงาน" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white"></textarea>
+        <div class="grid grid-cols-2 gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800">
+          <div>
+            <label class="block text-[11px] text-blue-400 font-medium mb-1">📸 ช่างภาพ (คน)</label>
+            <input type="number" id="j-photo-need" min="0" value="1" required class="w-full p-1.5 rounded bg-slate-900 border border-slate-700 text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] text-rose-400 font-medium mb-1">🎬 ช่างวิดีโอ (คน)</label>
+            <input type="number" id="j-video-need" min="0" value="0" required class="w-full p-1.5 rounded bg-slate-900 border border-slate-700 text-white">
+          </div>
+        </div>
+        <button type="submit" class="w-full py-2 bg-blue-600 rounded-lg text-white font-semibold">เปิดงานทันที</button>
+      </form>
+      <button onclick="closeModal('addJobModal')" class="w-full py-1.5 bg-slate-800 text-slate-400 rounded-lg text-xs">ยกเลิก</button>
+    </div>
+  </div>
+
+  <!-- Add Equip -->
+  <div id="addEquipModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 max-w-md w-full p-6 rounded-2xl space-y-3">
+      <h3 class="font-bold text-white">📦 เพิ่มอุปกรณ์เข้าคลัง</h3>
+      <form id="addEquipForm" class="space-y-2.5 text-xs">
+        <input type="text" id="eq-name" required placeholder="ชื่ออุปกรณ์ เช่น Sony A7 IV" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        <input type="text" id="eq-cat" required placeholder="หมวดหมู่ เช่น Camera, Lens, Audio" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        <input type="text" id="eq-note" placeholder="ตู้เก็บ / สถานที่เก็บ" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        <button type="submit" class="w-full py-2 bg-emerald-600 rounded-lg text-white font-semibold">บันทึกอุปกรณ์</button>
+      </form>
+      <button onclick="closeModal('addEquipModal')" class="w-full py-1.5 bg-slate-800 text-slate-400 rounded-lg text-xs">ยกเลิก</button>
+    </div>
+  </div>
+
+  <!-- Upload Gallery & Video -->
+  <div id="uploadDriveModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 max-w-md w-full p-6 rounded-2xl space-y-3">
+      <h3 class="font-bold text-white">อัปโหลดภาพลง Drive</h3>
+      <form id="uploadDriveForm" class="space-y-2.5 text-xs">
+        <input type="file" id="up-file" accept="image/*" required class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-slate-300">
+        <input type="text" id="up-title" required placeholder="ชื่อภาพ" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        <input type="text" id="up-photog" required placeholder="ชื่อช่างภาพ" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        <button type="submit" class="w-full py-2 bg-blue-600 rounded-lg text-white font-semibold">อัปโหลด</button>
+      </form>
+      <button onclick="closeModal('uploadDriveModal')" class="w-full py-1.5 bg-slate-800 text-slate-400 rounded-lg text-xs">ยกเลิก</button>
+    </div>
+  </div>
+
+  <div id="addVideoModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 max-w-md w-full p-6 rounded-2xl space-y-3">
+      <h3 class="font-bold text-white">เพิ่มวิดีโอ (YouTube)</h3>
+      <form id="addVideoForm" class="space-y-2.5 text-xs">
+        <input type="text" id="v-title" required placeholder="ชื่อวิดีโอ" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        <input type="url" id="v-url" required placeholder="ลิงก์ YouTube" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        <input type="text" id="v-creator" required placeholder="ทีมงาน/ผู้สร้างสรรค์" class="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-white">
+        <button type="submit" class="w-full py-2 bg-rose-600 rounded-lg text-white font-semibold">บันทึกวิดีโอ</button>
+      </form>
+      <button onclick="closeModal('addVideoModal')" class="w-full py-1.5 bg-slate-800 text-slate-400 rounded-lg text-xs">ยกเลิก</button>
+    </div>
+  </div>
+
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxX-ypRAttGLUQFCamSZdjBteiO4IPBiur2ZvE1IfNWOlc_KNlLaup2ECINXqPftKlpg/exec";
     const currentUser = JSON.parse(localStorage.getItem('crru_user')) || null;
 
-    // ตรวจสอบสิทธิ์ Admin
     if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'executive')) {
       alert('หน้านี้สำหรับแอดมินและผู้บริหารชมรมเท่านั้น');
       window.location.href = "index.html";
     }
 
-    document.getElementById('admin-user-tag').innerText = `เข้าสู่ระบบโดย: ${currentUser.fullname} (${currentUser.role})`;
+    document.getElementById('admin-user-tag').innerText = `ผู้ดูแล: ${currentUser.fullname} (${currentUser.role})`;
+
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
     async function apiPost(data) {
       const res = await fetch(SCRIPT_URL, {
@@ -105,98 +210,188 @@
       return await res.json();
     }
 
-    async function loadAdminMembers() {
-      const [uRes, eqRes] = await Promise.all([
-        fetch(`${SCRIPT_URL}?action=getAdminMembers`),
-        fetch(`${SCRIPT_URL}?action=getEquipments`)
-      ]);
-      const uJson = await uRes.json();
-      const eqJson = await eqRes.json();
+    async function loadAdminData() {
+      const res = await fetch(`${SCRIPT_URL}?action=getAllData&admin=true`);
+      const json = await res.json();
 
-      if (uJson.data) {
-        let pendingCount = 0;
-        let activeCount = 0;
-
-        document.getElementById('member-approval-tbody').innerHTML = uJson.data.map((m, index) => {
-          if (m.Status === 'Pending') pendingCount++;
-          if (m.Status === 'Active') activeCount++;
-
+      if (json.status === "success") {
+        // 1. ตารางสมาชิก
+        let pending = 0;
+        document.getElementById('admin-members-tbody').innerHTML = json.rawUsers.map((m, index) => {
+          if (m.Status === "Pending") pending++;
           return `
             <tr class="hover:bg-slate-950/40">
-              <td class="p-4 font-semibold text-white">${m.FullName}</td>
-              <td class="p-4 font-mono text-blue-400">${m.StudentId}</td>
-              <td class="p-4">${m.Faculty}</td>
-              <td class="p-4">${m.Phone || '-'}</td>
-              <td class="p-4">
+              <td class="p-3.5 font-semibold text-white">${m.FullName}</td>
+              <td class="p-3.5 font-mono text-blue-400">${m.StudentId}</td>
+              <td class="p-3.5">${m.Faculty}</td>
+              <td class="p-3.5">${m.Phone || '-'}</td>
+              <td class="p-3.5">
                 ${m.Status === 'Pending' ? `
-                  <div class="space-y-1.5">
-                    <select id="role-select-${index}" class="p-1.5 rounded-lg bg-slate-950 border border-slate-700 text-[11px] text-white">
-                      <option value="member">สมาชิกทั่วไป (member)</option>
+                  <div class="space-y-1">
+                    <select id="role-${index}" class="p-1 rounded bg-slate-950 border border-slate-700 text-[11px] text-white">
+                      <option value="member">สมาชิก (member)</option>
                       <option value="executive">ผู้บริหารชมรม (executive)</option>
                       <option value="admin">แอดมินสูงสุด (admin)</option>
                     </select>
-                    <select id="skill-select-${index}" class="p-1.5 rounded-lg bg-slate-950 border border-slate-700 text-[11px] text-white">
-                      <option value="photo" ${m.SkillType === 'photo' ? 'selected' : ''}>📸 สายช่างภาพ (Photo)</option>
-                      <option value="video" ${m.SkillType === 'video' ? 'selected' : ''}>🎬 สายช่างวิดีโอ (Video)</option>
-                      <option value="all" ${m.SkillType === 'all' ? 'selected' : ''}>📸🎬 ทำได้ทั้งสองสาย (All)</option>
+                    <select id="skill-${index}" class="p-1 rounded bg-slate-950 border border-slate-700 text-[11px] text-white">
+                      <option value="photo" ${m.SkillType === 'photo' ? 'selected' : ''}>📸 ช่างภาพ</option>
+                      <option value="video" ${m.SkillType === 'video' ? 'selected' : ''}>🎬 ช่างวิดีโอ</option>
+                      <option value="all" ${m.SkillType === 'all' ? 'selected' : ''}>📸🎬 ทั้งสองสาย</option>
                     </select>
-                    <input type="text" id="pos-input-${index}" placeholder="ระบุตำแหน่ง เช่น ช่างภาพ/ฝ่ายมีเดีย" value="${m.Position === 'รออนุมัติ' ? 'สมาชิกชมรม' : m.Position}" class="w-full p-1.5 rounded-lg bg-slate-950 border border-slate-700 text-[11px] text-white">
+                    <input type="text" id="pos-${index}" value="${m.Position === 'รออนุมัติ' ? 'สมาชิกชมรม' : m.Position}" class="w-full p-1 rounded bg-slate-950 border border-slate-700 text-[11px] text-white">
                   </div>
-                ` : `<span class="text-blue-400 font-semibold">${m.Position || '-'}</span> (${m.SkillType || 'photo'}) - <span class="text-emerald-400 font-bold">${m.Role}</span>`}
+                ` : `<span class="text-blue-400 font-semibold">${m.Position}</span> (${m.SkillType}) - <span class="text-emerald-400 font-bold">${m.Role}</span>`}
               </td>
-              <td class="p-4 text-center">
+              <td class="p-3.5 text-center">
                 ${m.Status === 'Pending' ? `
-                  <div class="flex items-center justify-center gap-2">
-                    <button onclick="approveMember('${m.StudentId}', ${index})" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold">อนุมัติ</button>
-                    <button onclick="rejectMember('${m.StudentId}')" class="px-2.5 py-1 bg-rose-900/60 hover:bg-rose-800 text-rose-300 border border-rose-700 rounded-lg text-xs">ปฏิเสธ</button>
+                  <div class="flex gap-1.5 justify-center">
+                    <button onclick="approveMember('${m.StudentId}', ${index})" class="px-3 py-1 bg-emerald-600 rounded text-white text-xs font-semibold">อนุมัติ</button>
+                    <button onclick="rejectMember('${m.StudentId}')" class="px-2 py-1 bg-rose-900 text-rose-300 rounded text-xs">ลบ</button>
                   </div>
                 ` : '<span class="text-slate-500 text-xs">อนุมัติแล้ว</span>'}
               </td>
             </tr>
           `;
         }).join('');
+        document.getElementById('badge-pending').innerText = `รออนุมัติ ${pending} คน`;
 
-        document.getElementById('stat-pending').innerText = pendingCount;
-        document.getElementById('stat-active').innerText = activeCount;
-      }
-
-      if (eqJson.data) {
-        document.getElementById('stat-equip').innerText = eqJson.data.length;
+        // 2. ตารางจัดการจองอุปกรณ์
+        document.getElementById('admin-bookings-tbody').innerHTML = json.bookings.map(b => `
+          <tr class="hover:bg-slate-950/40">
+            <td class="p-3.5 font-semibold text-white">${b.equipName}</td>
+            <td class="p-3.5">${b.userName} <span class="text-slate-500 text-[10px] block">${b.studentId}</span></td>
+            <td class="p-3.5">${b.startDate} ถึง ${b.endDate}</td>
+            <td class="p-3.5">${b.purpose}</td>
+            <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] bg-slate-950 border border-slate-800 text-blue-400">${b.status}</span></td>
+            <td class="p-3.5 text-center">
+              <select onchange="updateBookingStatus('${b.id}', this.value)" class="p-1 rounded bg-slate-950 border border-slate-700 text-[11px] text-white">
+                <option value="">-- ปรับสถานะ --</option>
+                <option value="อนุมัติแล้ว">อนุมัติการจอง</option>
+                <option value="กำลังใช้งาน">กำลังใช้งาน (เบิกแล้ว)</option>
+                <option value="คืนแล้ว">คืนแล้ว</option>
+                <option value="ยกเลิก">ยกเลิก</option>
+              </select>
+            </td>
+          </tr>
+        `).join('');
       }
       lucide.createIcons();
     }
 
     async function approveMember(studentId, index) {
-      const role = document.getElementById(`role-select-${index}`).value;
-      const skillType = document.getElementById(`skill-select-${index}`).value;
-      const position = document.getElementById(`pos-input-${index}`).value || "สมาชิกชมรม";
-
       Swal.showLoading();
       const res = await apiPost({
         action: "approve",
         studentId: studentId,
-        role: role,
-        skillType: skillType,
-        position: position
+        role: document.getElementById(`role-${index}`).value,
+        skillType: document.getElementById(`skill-${index}`).value,
+        position: document.getElementById(`pos-${index}`).value || "สมาชิกชมรม"
       });
       if (res.status === "success") {
-        Swal.fire({ icon: 'success', title: 'อนุมัติสำเร็จ', text: res.message, background: '#0f172a', color: '#fff' });
-        loadAdminMembers();
+        Swal.fire({ icon: 'success', title: 'สำเร็จ', text: res.message, background: '#0f172a', color: '#fff' });
+        loadAdminData();
       }
     }
 
     async function rejectMember(studentId) {
-      if (!confirm('ต้องการปฏิเสธและลบข้อมูลใบสมัครนี้ใช่หรือไม่?')) return;
+      if (!confirm('ต้องการลบข้อมูลนี้?')) return;
       Swal.showLoading();
       const res = await apiPost({ action: "rejectMember", studentId: studentId });
       if (res.status === "success") {
-        Swal.fire({ icon: 'success', title: 'ลบข้อมูลแล้ว', background: '#0f172a', color: '#fff' });
-        loadAdminMembers();
+        Swal.fire({ icon: 'success', title: 'ลบแล้ว', background: '#0f172a', color: '#fff' });
+        loadAdminData();
       }
     }
 
+    async function updateBookingStatus(bookingId, status) {
+      if (!status) return;
+      Swal.showLoading();
+      const res = await apiPost({ action: "updateBookingStatus", bookingId: bookingId, status: status });
+      if (res.status === "success") {
+        Swal.fire({ icon: 'success', title: 'สำเร็จ', text: res.message, background: '#0f172a', color: '#fff' });
+        loadAdminData();
+      }
+    }
+
+    // Forms
+    document.getElementById('addNewsForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      Swal.showLoading();
+      const res = await apiPost({
+        action: "addNews",
+        date: document.getElementById('news-date').value,
+        title: document.getElementById('news-title').value,
+        content: document.getElementById('news-content').value,
+        author: currentUser.fullname
+      });
+      closeModal('addNewsModal');
+      Swal.fire({ icon: 'success', title: 'โพสต์ข่าวแล้ว', background: '#0f172a', color: '#fff' });
+    });
+
+    document.getElementById('addJobForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      Swal.showLoading();
+      const res = await apiPost({
+        action: "addSchedule",
+        date: document.getElementById('j-date').value,
+        title: document.getElementById('j-title').value,
+        location: document.getElementById('j-location').value,
+        detail: document.getElementById('j-detail').value,
+        photoNeed: document.getElementById('j-photo-need').value,
+        videoNeed: document.getElementById('j-video-need').value
+      });
+      closeModal('addJobModal');
+      Swal.fire({ icon: 'success', title: 'เปิดงานแล้ว', background: '#0f172a', color: '#fff' });
+    });
+
+    document.getElementById('addEquipForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      Swal.showLoading();
+      const res = await apiPost({
+        action: "addEquipment",
+        name: document.getElementById('eq-name').value,
+        category: document.getElementById('eq-cat').value,
+        status: "พร้อมใช้งาน",
+        note: document.getElementById('eq-note').value
+      });
+      closeModal('addEquipModal');
+      Swal.fire({ icon: 'success', title: 'เพิ่มอุปกรณ์แล้ว', background: '#0f172a', color: '#fff' });
+    });
+
+    document.getElementById('uploadDriveForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById('up-file');
+      const reader = new FileReader();
+      Swal.showLoading();
+      reader.onload = async function() {
+        const res = await apiPost({
+          action: "uploadGallery",
+          fileData: reader.result,
+          fileName: fileInput.files[0].name,
+          title: document.getElementById('up-title').value,
+          photographer: document.getElementById('up-photog').value
+        });
+        closeModal('uploadDriveModal');
+        Swal.fire({ icon: 'success', title: 'อัปโหลดสำเร็จ', background: '#0f172a', color: '#fff' });
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    });
+
+    document.getElementById('addVideoForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      Swal.showLoading();
+      const res = await apiPost({
+        action: "addVideo",
+        title: document.getElementById('v-title').value,
+        youtubeUrl: document.getElementById('v-url').value,
+        creator: document.getElementById('v-creator').value
+      });
+      closeModal('addVideoModal');
+      Swal.fire({ icon: 'success', title: 'บันทึกวิดีโอแล้ว', background: '#0f172a', color: '#fff' });
+    });
+
     window.addEventListener('DOMContentLoaded', () => {
-      loadAdminMembers();
+      loadAdminData();
     });
   </script>
 </body>
